@@ -1,11 +1,7 @@
 #ifndef CARD_H
 #define CARD_H
 
-typedef unsigned int idType;
-typedef double balanceType;
-typedef unsigned short cardTypeT;
-typedef unsigned int rideCountType;
-typedef int Status;
+#include "types.h"
 
 class card{
     cardTypeT cardType;
@@ -20,7 +16,9 @@ class card{
     public:
     card();
     ~card();
-    Status swipe();
+    bool operator==(card c);
+
+    Status swipe(card c);
 
     Status showSwipeInfo() const;
     Status showInfo() const;

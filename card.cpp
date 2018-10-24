@@ -65,3 +65,7 @@ Status card::charge(balanceType amount){
     cout << "successfulPayment" << endl;
     return 0;
 }
+
+Status swipe(card c){
+    //TODO
+}
