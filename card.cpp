@@ -1,4 +1,5 @@
 #include "card.h"
+#include "message.h"
 #include <iostream>
 
 using namespace std;
@@ -56,16 +57,67 @@ Status card::freeRide(){
 }
 
 Status card::charge(balanceType amount){
+    if(amount<0){
+        message::qError(string("Cannot charge negative"));
+        return 1;
+    }
+
     if(balance < amount){
-        cout << "notEnoughBalance" << endl;
+        message::notEnoughBalance();
         return 1;
     }
 
     balance-=amount;
-    cout << "successfulPayment" << endl;
+    message::paymentSuccess();
     return 0;
 }
 
-Status swipe(card c){
-    //TODO
+Status card::swipe(){
+    if(id==0){return -1;}
+
+    switch(cardType){
+        
+        //Student
+        case 0:
+        Status chargeResult=charge();
+        if(chargeResult==0){
+            ride();
+            showSwipeInfo();
+        }
+        else{
+            rejectRide();
+        }
+        return 0;
+        break;
+
+        //Teacher
+        case 1:
+        ride();
+        showSwipeInfo();
+        return 0;
+        break;
+
+        //Restricted
+        case 2:
+        if(getFreeRideAvail() == true){
+            freeRide();
+            ride();
+            showSwipeInfo();
+        }
+        else{
+            Status chargeResult=charge();
+            if(chargeResult==0){
+                ride();
+                showSwipeInfo();
+            }
+            else{
+                rejectRide();
+            }
+        }
+        return 0;
+        break;
+
+        message::qError("Undefined error: card::swipe()");
+        return -1;
+    }
 }

@@ -16,7 +16,8 @@ class db{
     public:
     Status addCard(rfidType rfid);
     card findCard(rfidType rfid) const;
-    //TODO
+
+    Status monthlyUpdate();
 };
 
 #endif

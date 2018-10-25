@@ -21,6 +21,16 @@ Status db::addCard(rfidType rfid){
 }
 
 card db::findCard(rfidType rfid) const{
+    card emptycard;
+    rfCardMap::const_iterator it = dbMap.find(rfid);
+    if(it == dbMap.end()){
+        return emptycard;
+    }
+    
+    return it->second;
+}
+
+Status db::monthlyUpdate(){
     //TODO
 }
 

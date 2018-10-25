@@ -19,6 +19,7 @@ namespace message{
     void freeRideSuccess();
     void paymentSuccess();
     void notEnoughBalance();
+    void cardNotFound();
 
     //Backend
     void cardExists();

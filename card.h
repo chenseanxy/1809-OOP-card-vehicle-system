@@ -12,13 +12,14 @@ class card{
     Status charge(balanceType amount=2);
     Status ride();
     Status freeRide();
+    Status rejectRide();
 
     public:
     card();
     ~card();
     bool operator==(card c);
 
-    Status swipe(card c);
+    Status swipe();
 
     Status showSwipeInfo() const;
     Status showInfo() const;
