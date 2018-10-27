@@ -8,14 +8,14 @@ card::card(){
     message::newCard(id);
 }
 card::card(idType ID, cardTypeT cardT, balanceType bal, rideCountType rideC){
-    id=ID;
-    cardType=cardT;
-    balance=bal;
-    rideCount=rideC;
+    setID(ID);
+    setCardType(cardT);
+    setBalance(bal);
+    setRideCount(rideC);
     message::newCard(id);
 }
 card::~card(){
-    message::deletedCard(id);
+    message::deletedCard(getID());
 }
 
 balanceType card::getBalance() const{
@@ -32,7 +32,7 @@ idType card::getID() const{
 }
 
 bool card::getFreeRideAvail() const{
-    if(cardType==2 && rideCount<20){
+    if(getCardType()==2 && getRideCount()<20){
         return true;
     }
     return false;

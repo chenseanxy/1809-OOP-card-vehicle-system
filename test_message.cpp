@@ -3,16 +3,15 @@
 
 using namespace std;
 
-Status testMessage(){
-
-	message::cardExists();
-	message::cardAddSuccess();
+int main(){
+    message::cardExists();
+    message::cardAddSuccess();
 
 	message::freeRideSuccess();
 	message::paymentSuccess();
 	message::notEnoughBalance();
 	message::cardNotFound();
 
-	message::qError("qError Test");
-	return 0;
+    message::qError("qError Test");
+    return 0;
 }
