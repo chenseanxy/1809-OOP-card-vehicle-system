@@ -18,11 +18,21 @@ card::~card(){
     message::deletedCard(getID());
 }
 
+bool card::operator==(card c)
+{
+	return getID()==c.getID();
+}
+
 balanceType card::getBalance() const{
     return balance;
 }
 cardTypeT card::getCardType() const{
     return cardType;
+}
+string card::getCardTypeString() const
+{
+	string cardTypes[3] = { "Student, Teacher, Restricted" };
+	return cardTypes[getCardType()];
 }
 rideCountType card::getRideCount() const{
     return rideCount;
@@ -56,12 +66,11 @@ Status card::setRideCount(rideCountType rideC){
 }
 
 Status card::showSwipeInfo() const{
-	string cardTypes[3] = { "Student, Teacher, Restricted" };
-	cout << "ID: " << id << endl
-		 << "Card Type:" << cardTypes[cardType] << endl
-		 << "Balance:" << balance << endl
-		 << "Ride Counts This Month:" << rideCount << endl;
-	if (cardType == 2 && rideCount == 21) {
+	cout << "ID: " << getID() << endl
+		 << "Card Type:" << getCardTypeString() << endl
+		 << "Balance:" << getBalance() << endl
+		 << "Ride Counts This Month:" << getRideCount() << endl;
+	if (getCardType() == 2 && getRideCount() == 21) {
 		cout << "Started charging this time." << endl;
 	}
 	
@@ -73,16 +82,16 @@ Status card::showInfo() const{
 }
 
 Status card::ride(){
-    rideCount++;
+    setRideCount(getRideCount()+1);
     return 0;
 }
 
 Status card::freeRide(){
-    if(cardType != 2){
+    if(getCardType() != 2){
         return 1;
     }
 
-    cout << "successfulFreeRide" <<endl;
+    message::freeRideSuccess();
     return 0;
 }
 
@@ -94,32 +103,32 @@ Status card::rejectRide(){
 void card::debugPrintCard() const{
     cout 
     << "[DEBUG] -----Printing Card:-----" << endl
-    << "[DEBUG] ID: " << id << endl
-    << "[DEBUG] Card Type: " << cardType << endl
-    << "[DEBUG] Balance: " << balance << endl
-    << "[DEBUG] Ride Count: " << rideCount << endl;
+    << "[DEBUG] ID: " << getID() << endl
+    << "[DEBUG] Card Type: " << getCardType() << endl
+    << "[DEBUG] Balance: " << getBalance() << endl
+    << "[DEBUG] Ride Count: " << getRideCount() << endl;
 }
 
 Status card::charge(balanceType amount){
     if(amount<0){
-        message::qError(string("Cannot charge negative"));
+        message::qError(string("Cannot charge negative amount"));
         return 1;
     }
 
-    if(balance < amount){
+    if(getBalance() < amount){
         message::notEnoughBalance();
         return 1;
     }
 
-    balance-=amount;
+    setBalance(getBalance()-amount);
     message::paymentSuccess();
     return 0;
 }
 
 Status card::swipe(){
-    if(id==0){return -1;}
+    if(getID()==0){return -1;}
 
-    switch(cardType){
+    switch(getCardType()){
         
         //Student
         case 0:{

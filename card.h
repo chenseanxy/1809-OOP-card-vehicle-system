@@ -37,6 +37,7 @@ class card{
     balanceType getBalance() const;
     idType getID() const;
     cardTypeT getCardType() const;
+	string getCardTypeString() const;
     rideCountType getRideCount() const;
 
     Status setID(idType ID);
