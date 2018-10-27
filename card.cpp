@@ -56,13 +56,19 @@ Status card::setRideCount(rideCountType rideC){
 }
 
 Status card::showSwipeInfo() const{
-    printf("%ud %.2lf %ud\n", id, balance, rideCount);
-    cout << "Card Swipe Info should be shown here\n";
+	string cardTypes[3] = { "Student, Teacher, Restricted" };
+	cout << "ID: " << id << endl
+		 << "Card Type:" << cardTypes[cardType] << endl
+		 << "Balance:" << balance << endl
+		 << "Ride Counts This Month:" << rideCount << endl;
+	if (cardType == 2 && rideCount == 21) {
+		cout << "Started charging this time." << endl;
+	}
+	
     return 0;
 }
 Status card::showInfo() const{
-    printf("%ud %.2lf %ud\n", id, balance, rideCount);
-    cout << "More Info should be shown here\n";
+	debugPrintCard();
     return 0;
 }
 
@@ -85,7 +91,7 @@ Status card::rejectRide(){
     return 0;
 }
 
-void card::debugPrintCard(){
+void card::debugPrintCard() const{
     cout 
     << "[DEBUG] -----Printing Card:-----" << endl
     << "[DEBUG] ID: " << id << endl

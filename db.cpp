@@ -14,7 +14,7 @@ Status db::addCard(rfidType rfid, card c){
         return 0;
     }
 
-    message::qError(string("Card is not added"));
+    message::qError(string("Card not added"));
     return -1;
 }
 
@@ -41,5 +41,6 @@ Status db::monthlyUpdate(){
     for(iter=dbMap.begin(); iter!=dbMap.end(); iter++){
         iter->second.setRideCount(0);
     }
+	return 1;
 }
 

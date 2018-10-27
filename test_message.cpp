@@ -1,21 +1,18 @@
 #include "message.h"
 #include <iostream>
-#include <stdlib.h>
 
 using namespace std;
 
-int main(){
-    system("chcp 65001");
+Status testMessage(){
 
-    message::cardExists();
-    message::cardAddSuccess();
+	message::cardExists();
+	message::cardAddSuccess();
 
-    message::freeRideSuccess();
-    message::paymentSuccess();
-    message::notEnoughBalance();
-    message::cardNotFound();
+	message::freeRideSuccess();
+	message::paymentSuccess();
+	message::notEnoughBalance();
+	message::cardNotFound();
 
-    message::qError("qError Test");
-    system("pause");
-    return 0;
+	message::qError("qError Test");
+	return 0;
 }

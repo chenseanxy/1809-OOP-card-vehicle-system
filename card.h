@@ -19,6 +19,8 @@ class card{
     Status freeRide();
     Status rejectRide();
 
+
+
     public:
     card();
     card(idType ID, cardTypeT cardT, balanceType bal=0, rideCountType rideC=0);
@@ -27,7 +29,7 @@ class card{
 
     Status swipe();
 
-    void debugPrintCard();
+	void debugPrintCard() const;
     Status showSwipeInfo() const;
     Status showInfo() const;
 

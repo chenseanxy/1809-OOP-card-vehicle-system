@@ -11,7 +11,7 @@ void testCardGets(card c){
     << "[TEST] FreeAvial:" << c.getFreeRideAvail() << endl;
 }
 
-int main(){
+void main(){
     card c=card(17130188019,0);
     c.debugPrintCard();
     testCardGets(c);
@@ -25,6 +25,4 @@ int main(){
     c.debugPrintCard();
     c.swipe();
     c.debugPrintCard();
-
-    system("pause");
 }
