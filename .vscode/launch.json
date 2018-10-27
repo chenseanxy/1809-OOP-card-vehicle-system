@@ -9,7 +9,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}\\.vscode\\${fileBasenameNoExtension}.exe",
+            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -23,8 +23,8 @@
                     "text": "-enable-pretty-printing",
                     "ignoreFailures": true
                 }
-            ],
-            "preLaunchTask": "CompileC" // 调试会话开始前执行的任务，一般为编译程序。与tasks.json的taskName相对应
+            ]//,
+            //"preLaunchTask": "CompileC" // 调试会话开始前执行的任务，一般为编译程序。与tasks.json的taskName相对应
         }
     ]
 }
