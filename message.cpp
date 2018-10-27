@@ -45,10 +45,10 @@ void message::cardAddSuccess(){
     backendInfo("Sucessfully added card");
 }
 void message::newCard(idType id){
-    backendInfo("New card added: "+(unsigned int)id);
+    backendInfo("New card added: "+std::to_string(id));
 }
 void message::deletedCard(idType id){
-    backendInfo("Deleted card: "+(unsigned int)id);
+    backendInfo("Deleted card: "+ std::to_string(id));
 }
 
 
