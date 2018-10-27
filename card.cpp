@@ -5,10 +5,17 @@
 using namespace std;
 
 card::card(){
-    cout << "New Card" << endl;
+    message::newCard(id);
+}
+card::card(idType ID, cardTypeT cardT, balanceType bal, rideCountType rideC){
+    id=ID;
+    cardType=cardT;
+    balance=bal;
+    rideCount=rideC;
+    message::newCard(id);
 }
 card::~card(){
-    cout << "Deleting Card "<< id << endl;    
+    message::deletedCard(id);
 }
 
 balanceType card::getBalance() const{
@@ -25,10 +32,27 @@ idType card::getID() const{
 }
 
 bool card::getFreeRideAvail() const{
-    if(rideCount<20){
+    if(cardType==2 && rideCount<20){
         return true;
     }
     return false;
+}
+
+Status card::setID(idType ID){
+    id=ID;
+    return 0;
+}
+Status card::setCardType(cardTypeT cardT){
+    cardType=cardT;
+    return 0;
+}
+Status card::setBalance(balanceType bal){
+    balance=bal;
+    return 0;
+}
+Status card::setRideCount(rideCountType rideC){
+    rideCount=rideC;
+    return 0;
 }
 
 Status card::showSwipeInfo() const{
@@ -56,6 +80,20 @@ Status card::freeRide(){
     return 0;
 }
 
+Status card::rejectRide(){
+    message::qError("Ride rejected");
+    return 0;
+}
+
+void card::debugPrintCard(){
+    cout 
+    << "[DEBUG] -----Printing Card:-----" << endl
+    << "[DEBUG] ID: " << id << endl
+    << "[DEBUG] Card Type: " << cardType << endl
+    << "[DEBUG] Balance: " << balance << endl
+    << "[DEBUG] Ride Count: " << rideCount << endl;
+}
+
 Status card::charge(balanceType amount){
     if(amount<0){
         message::qError(string("Cannot charge negative"));
@@ -78,33 +116,7 @@ Status card::swipe(){
     switch(cardType){
         
         //Student
-        case 0:
-        Status chargeResult=charge();
-        if(chargeResult==0){
-            ride();
-            showSwipeInfo();
-        }
-        else{
-            rejectRide();
-        }
-        return 0;
-        break;
-
-        //Teacher
-        case 1:
-        ride();
-        showSwipeInfo();
-        return 0;
-        break;
-
-        //Restricted
-        case 2:
-        if(getFreeRideAvail() == true){
-            freeRide();
-            ride();
-            showSwipeInfo();
-        }
-        else{
+        case 0:{
             Status chargeResult=charge();
             if(chargeResult==0){
                 ride();
@@ -113,11 +125,38 @@ Status card::swipe(){
             else{
                 rejectRide();
             }
+            return 0;
+            break;
         }
+        //Teacher
+        case 1:
+        ride();
+        showSwipeInfo();
         return 0;
         break;
 
-        message::qError("Undefined error: card::swipe()");
-        return -1;
+        //Restricted
+        case 2:{
+            if(getFreeRideAvail() == true){
+                freeRide();
+                ride();
+                showSwipeInfo();
+            }
+            else{
+                Status chargeResult=charge();
+                if(chargeResult==0){
+                    ride();
+                    showSwipeInfo();
+                }
+                else{
+                    rejectRide();
+                }
+            }
+            return 0;
+            break;
+        }
+
     }
+    message::qError("Undefined error: card::swipe()");
+    return -1;
 }

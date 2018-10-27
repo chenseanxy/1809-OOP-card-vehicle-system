@@ -22,6 +22,8 @@ namespace message{
     void cardNotFound();
 
     //Backend
+    void newCard(idType id);
+    void deletedCard(idType id);
     void cardExists();
     void cardAddSuccess();
 };

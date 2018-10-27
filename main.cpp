@@ -13,7 +13,7 @@ rfidType phyRead(){
 Status readCard(){
     rfidType rfid=phyRead();
     card c=maindb.findCard(rfid);
-    if(c.getID==0){
+    if(c.getID()==0){
         message::cardNotFound();
         return -1;
     }
