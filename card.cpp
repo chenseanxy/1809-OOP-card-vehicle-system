@@ -5,7 +5,8 @@
 using namespace std;
 
 card::card(){
-    message::newCard(id);
+	setID(0);
+	message::qError("New empty card");
 }
 card::card(idType ID, cardTypeT cardT, balanceType bal, rideCountType rideC){
     setID(ID);

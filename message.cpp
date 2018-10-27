@@ -5,19 +5,19 @@ using namespace std;
 
 //Frontend Core
 void message::frontendInfo(string msg){
-    cout << "      [INFO] " << msg << endl;
+    cout << "[INFO] " << msg << endl;
 }
 void message::frontendErr(string msg){
-    cout << "      [ERR]  " << msg << endl;
+    cout << "[ERR]  " << msg << endl;
 }
 
 
 //Backend Core
 void message::backendInfo(string infoMsg){
-    cout << "     [INFO] " << infoMsg << endl;
+    cout << "       [INFO] " << infoMsg << endl;
 }
 void message::backendErr(string errMsg){
-    cout << "     [ERR]  " << errMsg << endl;
+    cout << "       [ERR]  " << errMsg << endl;
 }
 void message::qError(string errMsg){
     backendErr(errMsg);
@@ -35,6 +35,11 @@ void message::notEnoughBalance(){
 }
 void message::cardNotFound(){
     frontendInfo("Invalid card!");
+}
+
+void message::cardCantRead()
+{
+	frontendErr("Cannot read card, try again?");
 }
 
 //Backend

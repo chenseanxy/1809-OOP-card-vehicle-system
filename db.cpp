@@ -41,6 +41,16 @@ Status db::monthlyUpdate(){
     for(iter=dbMap.begin(); iter!=dbMap.end(); iter++){
         iter->second.setRideCount(0);
     }
-	return 1;
+	return 0;
 }
 
+Status db::writeToDisk() {
+	//TODO
+	return 0;
+}
+
+Status db::readFromDisk()
+{
+	//TODO
+	return 0;
+}

@@ -20,6 +20,8 @@ class db{
     void displayAllCards();
 
     Status monthlyUpdate();
+	Status writeToDisk();
+	Status readFromDisk();
 };
 
 #endif

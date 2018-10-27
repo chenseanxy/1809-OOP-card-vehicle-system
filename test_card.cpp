@@ -11,7 +11,7 @@ void testCardGets(card c){
     << "[TEST] FreeAvial:" << c.getFreeRideAvail() << endl;
 }
 
-void main(){
+void mainTestCard(){
     card c=card(17130188019,0);
     c.debugPrintCard();
     testCardGets(c);

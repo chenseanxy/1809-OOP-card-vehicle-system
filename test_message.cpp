@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int main(){
+int mainTestMessage(){
     message::cardExists();
     message::cardAddSuccess();
 

@@ -20,6 +20,7 @@ namespace message{
     void paymentSuccess();
     void notEnoughBalance();
     void cardNotFound();
+	void cardCantRead();
 
     //Backend
     void newCard(idType id);
