@@ -27,6 +27,8 @@ namespace message{
     void deletedCard(idType id);
     void cardExists();
     void cardAddSuccess();
+	void dbFileOpenError();
+	void dbFileReadError(string lastLine);
 };
 
 

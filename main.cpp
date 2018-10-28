@@ -28,6 +28,7 @@ Status readCard(){
 }
 
 int main() {
+	maindb.readFromDisk();
 	while (true) {
 		readCard();
 	}

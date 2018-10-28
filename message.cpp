@@ -49,6 +49,12 @@ void message::cardExists(){
 void message::cardAddSuccess(){
     backendInfo("Sucessfully added card");
 }
+void message::dbFileOpenError(){
+	backendErr("Can't open dbFile");
+}
+void message::dbFileReadError(string lastLine){
+	backendErr("dbFile read error, last line: " + lastLine);
+}
 void message::newCard(idType id){
     backendInfo("New card added: "+std::to_string(id));
 }

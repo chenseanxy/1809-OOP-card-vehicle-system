@@ -1,6 +1,7 @@
 #include "db.h"
 #include "message.h"
 #include <iostream>
+#include <fstream>
 
 Status db::addCard(rfidType rfid, card c){
     if(dbMap.find(rfid) != dbMap.end()){
@@ -45,12 +46,52 @@ Status db::monthlyUpdate(){
 }
 
 Status db::writeToDisk() {
-	//TODO
+	fstream dbFile("db.dat");
+	if (!dbFile.is_open()) {
+		message::dbFileOpenError();
+		return 1;
+	}
+
+	rfCardMap::iterator iter = dbMap.begin();
+	while (iter != dbMap.end()) {
+		dbFile << iter->first << " "
+			<< iter->second.getID() << " "
+			<< iter->second.getCardType() << " "
+			<< iter->second.getBalance() << " "
+			<< iter->second.getRideCount() << " " << endl;
+	}
+	dbFile.close();
 	return 0;
 }
 
 Status db::readFromDisk()
 {
-	//TODO
+	ifstream dbFile("db.dat");
+	if (!dbFile.is_open()) {
+		message::dbFileOpenError();
+		return 1;
+	}
+
+	dbMap.clear();
+	char buffer[4096];
+	rfidType rfid;
+	idType id;
+	cardTypeT cardType;
+	balanceType balance;
+	rideCountType rideCount;
+	int scanCount;
+
+	while (!dbFile.eof()) {
+		dbFile.getline(buffer, 4096);
+		scanCount=sscanf(buffer, "%u %llu %hu %lf %u",&rfid, &id, &cardType, &balance, &rideCount);
+		if (scanCount != 5) {
+			message::dbFileReadError(string(buffer));
+			dbMap.clear();
+			return -1;
+		}
+
+		card c(id, cardType, balance, rideCount);
+		addCard(rfid, c);
+	}
 	return 0;
 }
