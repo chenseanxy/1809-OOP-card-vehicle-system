@@ -1,6 +1,4 @@
-#ifndef CARD_H
-#define CARD_H
-#define DEBUG
+#pragma once
 
 #include "message.h"
 #include "types.h"
@@ -11,9 +9,6 @@ class card{
     balanceType balance;
     rideCountType rideCount;
 
-    #ifdef DEBUG
-    public:
-    #endif
     Status charge(balanceType amount=2);
     Status ride();
     Status freeRide();
@@ -45,5 +40,3 @@ class card{
     Status setBalance(balanceType bal);
     Status setRideCount(rideCountType rideC);
 };
-
-#endif

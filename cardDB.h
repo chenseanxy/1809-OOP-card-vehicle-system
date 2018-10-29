@@ -1,5 +1,4 @@
-#ifndef CARD_DB_H
-#define CARD_DB_H
+#pragma once
 
 #include <map>
 #include "card.h"
@@ -28,5 +27,3 @@ class cardDB{
 	Status writeToDisk();
 	Status readFromDisk();
 };
-
-#endif

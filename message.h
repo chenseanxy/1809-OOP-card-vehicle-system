@@ -1,5 +1,4 @@
-#ifndef MESSAGE_H
-#define MESSAGE_H
+#pragma once
 
 #include "types.h"
 #include <string>
@@ -30,6 +29,3 @@ namespace message{
 	void dbFileOpenError();
 	void dbFileReadError(string lastLine);
 };
-
-
-#endif // MESSAGE_H
