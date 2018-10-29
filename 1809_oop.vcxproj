@@ -101,7 +101,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="card.cpp" />
-    <ClCompile Include="db.cpp" />
+    <ClCompile Include="cardDB.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message.cpp" />
     <ClCompile Include="test_card.cpp" />
@@ -109,7 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="card.h" />
-    <ClInclude Include="db.h" />
+    <ClInclude Include="cardDB.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
@@ -117,7 +117,7 @@
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="db.txt" />
+    <Text Include="cardDB.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

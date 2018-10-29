@@ -1,5 +1,5 @@
-#ifndef DB_H
-#define DB_H
+#ifndef CARD_DB_H
+#define CARD_DB_H
 
 #include <map>
 #include "card.h"
@@ -10,14 +10,14 @@ typedef map<rfidType,card> rfCardMap;
 typedef pair<rfidType,card> rfCardPair;
 typedef pair<rfCardMap::iterator,bool> iterPair;
 
-class db{
+class cardDB{
     rfCardMap dbMap;
 
     public:
 	card emptyCard;
 
-	db();
-	~db();
+	cardDB();
+	~cardDB();
 
 	Status addCard(rfidType rfid, card c);
 	card& findCard(rfidType rfid);

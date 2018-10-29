@@ -1,19 +1,19 @@
-#include "db.h"
+#include "cardDB.h"
 #include "message.h"
 #include <iostream>
 #include <fstream>
 
-db::db() {
+cardDB::cardDB() {
 	message::backendInfo("Constructing DB");
 	readFromDisk();
 }
 
-db::~db() {
+cardDB::~cardDB() {
 	message::backendInfo("Destorying DB");
 	writeToDisk();
 }
 
-Status db::addCard(rfidType rfid, card c){
+Status cardDB::addCard(rfidType rfid, card c){
     if(dbMap.find(rfid) != dbMap.end()){
         message::cardExists();
         return 1;
@@ -29,7 +29,7 @@ Status db::addCard(rfidType rfid, card c){
     return -1;
 }
 
-card& db::findCard(rfidType rfid){
+card& cardDB::findCard(rfidType rfid){
     rfCardMap::iterator it = dbMap.find(rfid);
     if(it == dbMap.end()){
         return emptyCard;
@@ -38,7 +38,7 @@ card& db::findCard(rfidType rfid){
     return it->second;
 }
 
-void db::displayAllCards(){
+void cardDB::displayAllCards(){
     rfCardMap::iterator iter=dbMap.begin();
     while(iter != dbMap.end()){
         iter->second.debugPrintCard();
@@ -46,7 +46,7 @@ void db::displayAllCards(){
     }
 }
 
-Status db::monthlyUpdate(){
+Status cardDB::monthlyUpdate(){
     rfCardMap::iterator iter;
     for(iter=dbMap.begin(); iter!=dbMap.end(); iter++){
         iter->second.setRideCount(0);
@@ -54,8 +54,8 @@ Status db::monthlyUpdate(){
 	return 0;
 }
 
-Status db::writeToDisk() {
-	fstream dbFile("db.txt");
+Status cardDB::writeToDisk() {
+	fstream dbFile("cardDB.txt");
 	if (!dbFile.is_open()) {
 		message::dbFileOpenError();
 		return 1;
@@ -74,9 +74,9 @@ Status db::writeToDisk() {
 	return 0;
 }
 
-Status db::readFromDisk()
+Status cardDB::readFromDisk()
 {
-	ifstream dbFile("db.txt");
+	ifstream dbFile("cardDB.txt");
 	if (!dbFile.is_open()) {
 		message::dbFileOpenError();
 		return 1;

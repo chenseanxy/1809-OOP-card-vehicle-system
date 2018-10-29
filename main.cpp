@@ -1,9 +1,9 @@
 #include "types.h"
-#include "db.h"
+#include "cardDB.h"
 #include "card.h"
 #include "message.h"
 
-db maindb;
+cardDB maindb;
 
 rfidType phyRead(){
     rfidType rfid=0;
