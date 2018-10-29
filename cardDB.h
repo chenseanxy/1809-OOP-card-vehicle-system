@@ -11,7 +11,7 @@ typedef pair<rfidType,card> rfCardPair;
 typedef pair<rfCardMap::iterator,bool> iterPair;
 
 class cardDB{
-    rfCardMap dbMap;
+    rfCardMap cardMap;
 
     public:
 	card emptyCard;

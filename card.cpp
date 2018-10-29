@@ -13,10 +13,10 @@ card::card(idType ID, cardTypeT cardT, balanceType bal, rideCountType rideC){
     cardType=cardT;
     balance=bal;
     rideCount=rideC;
-    message::newCard(id);
+    //message::newCard(id);
 }
 card::~card(){
-    message::deletedCard(getID());
+    //message::deletedCard(getID());
 }
 
 bool card::operator==(card c)

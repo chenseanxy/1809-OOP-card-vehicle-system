@@ -4,8 +4,8 @@
 using namespace std;
 
 int mainTestMessage(){
-    message::cardExists();
-    message::cardAddSuccess();
+//    message::cardExists();
+//    message::cardAddSuccess();
 
 	message::freeRideSuccess();
 	message::paymentSuccess();

@@ -43,11 +43,11 @@ void message::cardCantRead()
 }
 
 //Backend
-void message::cardExists(){
-    backendErr("Card already exists");
+void message::cardExists(idType id){
+    backendErr("Card already exists " + to_string(id));
 }
-void message::cardAddSuccess(){
-    backendInfo("Sucessfully added card");
+void message::cardAddSuccess(idType id){
+    backendInfo("Sucessfully added card " + to_string(id));
 }
 void message::dbFileOpenError(){
 	backendErr("Can't open dbFile");

@@ -25,8 +25,8 @@ namespace message{
     //Backend
     void newCard(idType id);
     void deletedCard(idType id);
-    void cardExists();
-    void cardAddSuccess();
+	void cardExists(idType id);
+	void cardAddSuccess(idType id);
 	void dbFileOpenError();
 	void dbFileReadError(string lastLine);
 };
