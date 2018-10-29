@@ -1,4 +1,5 @@
 #pragma once
+#include <ctime>
 
 //Core
 typedef int Status;
@@ -13,6 +14,8 @@ typedef unsigned int rideCountType;
 typedef unsigned int rfidType;
 typedef unsigned short vehNumType;
 typedef unsigned short vehLoadType;
-
-//Schedule:
-typedef unsigned short schNumType;
+typedef struct times {
+	time_t tArr;
+	time_t tDept;
+	time_t tDest;
+};

@@ -104,8 +104,6 @@
     <ClCompile Include="cardDB.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message.cpp" />
-    <ClCompile Include="sch.cpp" />
-    <ClCompile Include="schDB.cpp" />
     <ClCompile Include="test_card.cpp" />
     <ClCompile Include="test_message.cpp" />
     <ClCompile Include="veh.cpp" />
@@ -115,8 +113,6 @@
     <ClInclude Include="card.h" />
     <ClInclude Include="cardDB.h" />
     <ClInclude Include="message.h" />
-    <ClInclude Include="sch.h" />
-    <ClInclude Include="schDB.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="veh.h" />
     <ClInclude Include="vehDB.h" />
