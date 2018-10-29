@@ -33,6 +33,18 @@
     <ClCompile Include="cardDB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="veh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="schDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vehDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="card.h">
@@ -45,6 +57,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cardDB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vehDB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="veh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="schDB.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

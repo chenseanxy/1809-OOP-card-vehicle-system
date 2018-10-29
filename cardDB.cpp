@@ -13,13 +13,13 @@ cardDB::~cardDB() {
 	writeToDisk();
 }
 
-Status cardDB::addCard(rfidType rfid, card c){
+Status cardDB::add(rfidType rfid, card c){
     if(cardMap.find(rfid) != cardMap.end()){
         message::cardExists(c.getID());
         return 1;
     }
 
-    iterPair p=cardMap.insert(rfCardPair(rfid, c));
+    rfCardIterPair p=cardMap.insert(rfCardPair(rfid, c));
     if(p.second){
         message::cardAddSuccess(c.getID());
         return 0;
@@ -29,7 +29,7 @@ Status cardDB::addCard(rfidType rfid, card c){
     return -1;
 }
 
-card& cardDB::findCard(rfidType rfid){
+card& cardDB::find(rfidType rfid){
     rfCardMap::iterator it = cardMap.find(rfid);
     if(it == cardMap.end()){
         return emptyCard;
@@ -38,7 +38,7 @@ card& cardDB::findCard(rfidType rfid){
     return it->second;
 }
 
-void cardDB::displayAllCards(){
+void cardDB::display(){
     rfCardMap::iterator iter=cardMap.begin();
     while(iter != cardMap.end()){
         iter->second.debugPrintCard();
@@ -106,7 +106,7 @@ Status cardDB::readFromDisk()
 		}
 
 		card c(id, cardType, balance, rideCount);
-		addCard(rfid, c);
+		add(rfid, c);
 	}
 	return 0;
 }

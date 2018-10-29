@@ -7,21 +7,21 @@ using namespace std;
 
 typedef map<rfidType,card> rfCardMap;
 typedef pair<rfidType,card> rfCardPair;
-typedef pair<rfCardMap::iterator,bool> iterPair;
+typedef pair<rfCardMap::iterator,bool> rfCardIterPair;
 
 class cardDB{
     rfCardMap cardMap;
 
-    public:
+public:
 	card emptyCard;
 
 	cardDB();
 	~cardDB();
 
-	Status addCard(rfidType rfid, card c);
-	card& findCard(rfidType rfid);
+	Status add(rfidType rfid, card c);
+	card& find(rfidType rfid);
 
-	void displayAllCards();
+	void display();
 
 	Status monthlyUpdate();
 	Status writeToDisk();
