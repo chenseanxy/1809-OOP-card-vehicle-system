@@ -18,7 +18,7 @@ Status readCard(){
 		return -1;
 	}
 
-	card c = maindb.findCard(rfid);
+	card& c = maindb.findCard(rfid);
 	if (c.getID() == 0) {
 		message::cardNotFound();
 		return -1;
@@ -28,10 +28,9 @@ Status readCard(){
 }
 
 int main() {
-	maindb.readFromDisk();
-	while (true) {
-		readCard();
-	}
+	readCard();
+	readCard();
+	readCard();
 	return 0;
 }
 

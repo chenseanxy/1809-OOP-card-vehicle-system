@@ -14,12 +14,17 @@ class db{
     rfCardMap dbMap;
 
     public:
-    Status addCard(rfidType rfid, card c);
-    card findCard(rfidType rfid) const;
+	card emptyCard;
 
-    void displayAllCards();
+	db();
+	~db();
 
-    Status monthlyUpdate();
+	Status addCard(rfidType rfid, card c);
+	card& findCard(rfidType rfid);
+
+	void displayAllCards();
+
+	Status monthlyUpdate();
 	Status writeToDisk();
 	Status readFromDisk();
 };

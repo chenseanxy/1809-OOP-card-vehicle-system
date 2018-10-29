@@ -3,6 +3,16 @@
 #include <iostream>
 #include <fstream>
 
+db::db() {
+	message::backendInfo("Constructing DB");
+	readFromDisk();
+}
+
+db::~db() {
+	message::backendInfo("Destorying DB");
+	writeToDisk();
+}
+
 Status db::addCard(rfidType rfid, card c){
     if(dbMap.find(rfid) != dbMap.end()){
         message::cardExists();
@@ -19,11 +29,10 @@ Status db::addCard(rfidType rfid, card c){
     return -1;
 }
 
-card db::findCard(rfidType rfid) const{
-    card emptycard;
-    rfCardMap::const_iterator it = dbMap.find(rfid);
+card& db::findCard(rfidType rfid){
+    rfCardMap::iterator it = dbMap.find(rfid);
     if(it == dbMap.end()){
-        return emptycard;
+        return emptyCard;
     }
     
     return it->second;
@@ -46,7 +55,7 @@ Status db::monthlyUpdate(){
 }
 
 Status db::writeToDisk() {
-	fstream dbFile("db.dat");
+	fstream dbFile("db.txt");
 	if (!dbFile.is_open()) {
 		message::dbFileOpenError();
 		return 1;
@@ -59,6 +68,7 @@ Status db::writeToDisk() {
 			<< iter->second.getCardType() << " "
 			<< iter->second.getBalance() << " "
 			<< iter->second.getRideCount() << " " << endl;
+		iter++;
 	}
 	dbFile.close();
 	return 0;
@@ -66,7 +76,7 @@ Status db::writeToDisk() {
 
 Status db::readFromDisk()
 {
-	ifstream dbFile("db.dat");
+	ifstream dbFile("db.txt");
 	if (!dbFile.is_open()) {
 		message::dbFileOpenError();
 		return 1;

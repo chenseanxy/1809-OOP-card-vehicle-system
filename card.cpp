@@ -5,14 +5,14 @@
 using namespace std;
 
 card::card(){
-	setID(0);
+	id=0;
 	message::qError("New empty card");
 }
 card::card(idType ID, cardTypeT cardT, balanceType bal, rideCountType rideC){
-    setID(ID);
-    setCardType(cardT);
-    setBalance(bal);
-    setRideCount(rideC);
+    id=ID;
+    cardType=cardT;
+    balance=bal;
+    rideCount=rideC;
     message::newCard(id);
 }
 card::~card(){
@@ -30,9 +30,8 @@ balanceType card::getBalance() const{
 cardTypeT card::getCardType() const{
     return cardType;
 }
-string card::getCardTypeString() const
-{
-	string cardTypes[3] = { "Student, Teacher, Restricted" };
+string card::getCardTypeString() const{
+	string cardTypes[3] = { "Student", "Teacher", "Restricted" };
 	return cardTypes[getCardType()];
 }
 rideCountType card::getRideCount() const{
