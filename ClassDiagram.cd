@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="card" Collapsed="true">
+    <Position X="1.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABICARAAgQBCAAAAACQQoCAgAABABBCACAAABCgA=</HashCode>
+      <FileName>card.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cardDB" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAIAAAAAAAAQAEgAAAAgAAEACAAACAAAAAACAAA=</HashCode>
+      <FileName>cardDB.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="veh" Collapsed="true">
+    <Position X="1.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAGAgAAAAAAAAAIAAAAEAAAAAAAA=</HashCode>
+      <FileName>veh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="vehDB" Collapsed="true">
+    <Position X="3.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAgAAAAgAAEAAAAECAAAAAACACA=</HashCode>
+      <FileName>vehDB.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="sch" Collapsed="true">
+    <Position X="1.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ARAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>sch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="schDB" Collapsed="true">
+    <Position X="3.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAgAAAAgAAEAAAAACAAIBAACAAA=</HashCode>
+      <FileName>schDB.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>
