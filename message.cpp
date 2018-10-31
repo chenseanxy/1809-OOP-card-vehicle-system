@@ -23,6 +23,10 @@ void message::qError(string errMsg){
     backendErr(errMsg);
 }
 
+void message::debug(string debugMsg) {
+	cout << "       [DEBUG]" << debugMsg << endl;
+}
+
 //Frontend
 void message::freeRideSuccess(){
     frontendInfo("Enjoy your free ride!");

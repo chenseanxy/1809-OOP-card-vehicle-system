@@ -14,6 +14,8 @@ namespace message{
     void backendErr(string errMsg);
     void qError(string errMsg);
 
+	void debug(string debugMsg);
+
     //Frontend
     void freeRideSuccess();
     void paymentSuccess();
