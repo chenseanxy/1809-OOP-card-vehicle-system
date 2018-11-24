@@ -44,9 +44,6 @@
     <ClInclude Include="card.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="message.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -66,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="msg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,8 +5,8 @@
 
 using namespace std;
 
-typedef map<rfidType,card> rfCardMap;
-typedef pair<rfidType,card> rfCardPair;
+typedef map<cRFIDType,card> rfCardMap;
+typedef pair<cRFIDType,card> rfCardPair;
 typedef pair<rfCardMap::iterator,bool> rfCardIterPair;
 
 class cardDB{
@@ -18,8 +18,8 @@ public:
 	cardDB();
 	~cardDB();
 
-	Status add(rfidType rfid, card c);
-	card& find(rfidType rfid);
+	Status add(cRFIDType rfid, card c);
+	card& find(cRFIDType rfid);
 
 	void display();
 

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-typedef map<vehNumType, veh> vehMapType;
+typedef map<vIDType, veh> vehMapType;
 
 class vehDB {
 	vehMapType vehMap;
@@ -16,8 +16,8 @@ public:
 	vehDB();
 	~vehDB();
 
-	Status add(vehNumType vehNum, veh v);
-	veh& find(vehNumType vehNum);
+	Status add(vIDType vehNum, veh v);
+	veh& find(vIDType vehNum);
 
 	void display();
 

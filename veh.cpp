@@ -1,12 +1,12 @@
 #include "types.h"
 #include "veh.h"
-#include "message.h"
+#include "msg.h"
 
 veh::veh() {
 	maxLoad = 0;
 }
 
-veh::veh(string lic, string driv, vehLoadType maxLo, sch schT, vehNumType nv) {
+veh::veh(string lic, string driv, vLoadType maxLo, sch schT, vIDType nv) {
 	license = lic;
 	driver = driv;
 	load = 0;
@@ -33,11 +33,11 @@ bool veh::isFull() const {
 	return load >= maxLoad;
 }
 
-vehLoadType veh::getLoad() const {
+vLoadType veh::getLoad() const {
 	return load;
 }
 
-vehLoadType veh::getMaxLoad() const {
+vLoadType veh::getMaxLoad() const {
 	return maxLoad;
 }
 
@@ -57,27 +57,27 @@ sch veh::getTime() const {
 	return vehTime;
 }
 
-vehNumType veh::getNextVeh() const {
+vIDType veh::getNextVeh() const {
 	return nextVeh;
 }
 
 void veh::print() const {
-	message::debug("License: " + getLicense());
-	message::debug("Driver: " + getDriver());
-	message::debug("Load / MaxLoad: " + to_string(getLoad()) + " / " + to_string(getMaxLoad()));
-	message::debug("isFull: " + to_string(isFull()));
+	msg::debug("License: " + getLicense());
+	msg::debug("Driver: " + getDriver());
+	msg::debug("Load / MaxLoad: " + to_string(getLoad()) + " / " + to_string(getMaxLoad()));
+	msg::debug("isFull: " + to_string(isFull()));
 	//TODO: More debug info required
 }
 
 Status veh::incLoad() {
 	if (isFull()) {
-		message::frontendErr("Sorry, vehicle is full.");
+		msg::frontendErr("Sorry, vehicle is full.");
 	}
 	load++;
 	return 0;
 }
 
-Status veh::setLoad(vehLoadType amount) {
+Status veh::setLoad(vLoadType amount) {
 	load = amount;
 	return 0;
 }

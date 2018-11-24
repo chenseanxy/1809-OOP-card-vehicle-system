@@ -1,11 +1,44 @@
 #include "ui.h"
 
+cRFIDType ui::read::crfid() {
+	cRFIDType r=0;
+	while (!scanf("%u", &r)) {
+		msg::frontendErr("crfid read error");
+	}
+	return r;
+}
+
+cIDType ui::read::cid() {
+	return cIDType();
+}
+
+cBalanceType ui::read::cbal() {
+	return cBalanceType();
+}
+
+cTypeT ui::read::ctype() {
+	return cTypeT();
+}
+
+cRideCountType ui::read::cRideCount() {
+	return cRideCountType();
+}
+
+vIDType ui::read::vid() {
+	return vIDType();
+}
+
+vLoadType ui::read::vload() {
+	return vLoadType();
+}
+
+
 Status ui::ui() {
 	int mode=0;
 	while (mode != -1) {
-		message::ui_input("Please enter mode");
+		msg::ui_input("Please enter mode");
 		while (scanf("%d", &mode) != 1) {
-			message::ui_input("Please enter a valid number");
+			msg::ui_input("Please enter a valid number");
 		}
 
 		switch (mode) {
@@ -24,7 +57,7 @@ Status ui::ui() {
 			ui::cardDBOps();
 			break;
 		default:
-			message::frontendErr("Selected ui mode is not available");
+			msg::frontendErr("Selected ui mode is not available");
 			break;
 		}
 		
@@ -33,32 +66,25 @@ Status ui::ui() {
 	return 0;
 }
 
-rfidType phyRead() {
-	rfidType rfid = 0;
-	scanf("%u", &rfid);
-	return rfid;
-}
 
-Status readCard() {
-	rfidType rfid = phyRead();
+Status ui::cardReader(){
+	vIDType v;
+	v = ui::read::vid();
+
+	cRFIDType rfid = ui::read::crfid();
 	if (rfid == 0) {
-		message::frontendErr("Cannot read card");
-		return -1;
+		msg::backendInfo("Exiting cardReader");
 	}
 
 	card& c = cdb.find(rfid);
 	if (c.getID() == 0) {
-		message::frontendInfo("Invalid card");
-		return -1;
+		msg::frontendInfo("Invalid card, please retry");
 	}
 
-	return c.swipe();
+	if (c.swipe(v)) {
+		msg::frontendErr("Scan failed, please retry");
+	}
 }
-
-Status ui::cardReader() {
-	return readCard();
-}
-
 
 Status ui::cardDBOps() {
 	return Status();

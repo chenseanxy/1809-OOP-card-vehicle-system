@@ -8,15 +8,15 @@
 typedef int Status;
 
 //Card:
-typedef unsigned long long idType;
-typedef double balanceType;
-typedef unsigned short cardTypeT;
-typedef unsigned int rideCountType;
+typedef unsigned int cRFIDType;
+typedef unsigned long long cIDType;
+typedef double cBalanceType;
+typedef unsigned short cTypeT;
+typedef unsigned int cRideCountType;
 
 //Veh:
-typedef unsigned int rfidType;
-typedef unsigned short vehNumType;
-typedef unsigned short vehLoadType;
+typedef unsigned short vIDType;
+typedef unsigned short vLoadType;
 
 //Sch:
 typedef long long timeType;

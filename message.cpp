@@ -1,63 +1,63 @@
-#include "message.h"
+#include "msg.h"
 #include <iostream>
 
 using namespace std;
 
-void message::ui_input(string msg) {
+void msg::ui_input(string msg) {
 	cout << msg << ": ";
 }
 
 //Frontend Core
-void message::frontendInfo(string msg){
+void msg::frontendInfo(string msg){
     cout << "[INFO] " << msg << endl;
 }
-void message::frontendErr(string msg){
+void msg::frontendErr(string msg){
     cout << "[ERR]  " << msg << endl;
 }
 
 
 //Backend Core
-void message::backendInfo(string infoMsg){
+void msg::backendInfo(string infoMsg){
     cout << "       [INFO] " << infoMsg << endl;
 }
-void message::backendErr(string errMsg){
+void msg::backendErr(string errMsg){
     cout << "       [ERR]  " << errMsg << endl;
 }
-void message::qError(string errMsg){
+void msg::qError(string errMsg){
     backendErr(errMsg);
 }
 
-void message::debug(string debugMsg) {
+void msg::debug(string debugMsg) {
 	cout << "       [DEBUG]" << debugMsg << endl;
 }
 
 //Frontend
-void message::freeRideSuccess(){
+void msg::freeRideSuccess(){
     frontendInfo("Enjoy your free ride!");
 }
-void message::paymentSuccess(){
+void msg::paymentSuccess(){
     frontendInfo("Payment successful!");
 }
-void message::notEnoughBalance(){
-    frontendInfo("Not enough balance!");
+void msg::notEnoughBalance(){
+    frontendInfo("Not enough cBal!");
 }
 
 //Backend
-void message::cardExists(idType id){
-    backendErr("Card already exists " + to_string(id));
+void msg::cardExists(cIDType cid){
+    backendErr("Card already exists " + to_string(cid));
 }
-void message::cardAddSuccess(idType id){
-    backendInfo("Sucessfully added card " + to_string(id));
+void msg::cardAddSuccess(cIDType cid){
+    backendInfo("Sucessfully added card " + to_string(cid));
 }
 
-void message::dbFileReadError(string lastLine){
+void msg::dbFileReadError(string lastLine){
 	backendErr("dbFile read error, last line: " + lastLine);
 }
-void message::newCard(idType id){
-    backendInfo("New card added: "+std::to_string(id));
+void msg::newCard(cIDType cid){
+    backendInfo("New card added: "+std::to_string(cid));
 }
-void message::deletedCard(idType id){
-    backendInfo("Deleted card: "+ std::to_string(id));
+void msg::deletedCard(cIDType cid){
+    backendInfo("Deleted card: "+ std::to_string(cid));
 }
 
 

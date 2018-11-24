@@ -1,40 +1,48 @@
 #pragma once
 
-#include "message.h"
+#include "msg.h"
 #include "types.h"
 
 class card{
-    cardTypeT cardType;
-    idType id;
-    balanceType balance;
-    rideCountType rideCount;
+    cTypeT cType;
+    cIDType cid;
+    cBalanceType cBal;
+    cRideCountType cRideCount;
 
-    Status charge(balanceType amount=2);
+	string cName;
+	string cGender;
+	string cUnit;
+
+    Status charge(cBalanceType amount=2);
     Status ride();
     Status freeRide();
     Status rejectRide();
 
 public:
     card();
-    card(idType ID, cardTypeT cardT, balanceType bal=0, rideCountType rideC=0);
+    card(cIDType ID, cTypeT cardT, cBalanceType bal, cRideCountType rideC, string name, string gender, string unit);
     ~card();
     bool operator==(card c);
 
-    Status swipe(vehNumType vehNum);
+    Status swipe(vIDType vehNum);
 
 	void debugPrintCard() const;
     Status showSwipeInfo() const;
     Status showInfo() const;
 
     bool getFreeRideAvail() const;
-    balanceType getBalance() const;
-    idType getID() const;
-    cardTypeT getCardType() const;
+    cBalanceType getBalance() const;
+    cIDType getID() const;
+    cTypeT getCardType() const;
 	string getCardTypeString() const;
-    rideCountType getRideCount() const;
+    cRideCountType getRideCount() const;
 
-    Status setID(idType ID);
-    Status setCardType(cardTypeT cardT);
-    Status setBalance(balanceType bal);
-    Status setRideCount(rideCountType rideC);
+	string getName() const;
+	string getGender() const;
+	string getUnit() const;
+
+    Status setID(cIDType ID);
+    Status setCardType(cTypeT cardT);
+    Status setBalance(cBalanceType bal);
+    Status setRideCount(cRideCountType rideC);
 };

@@ -112,7 +112,7 @@
   <ItemGroup>
     <ClInclude Include="card.h" />
     <ClInclude Include="cardDB.h" />
-    <ClInclude Include="message.h" />
+    <ClInclude Include="msg.h" />
     <ClInclude Include="sch.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="ui.h" />

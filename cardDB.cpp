@@ -1,35 +1,35 @@
 #include "cardDB.h"
-#include "message.h"
+#include "msg.h"
 #include <iostream>
 #include <fstream>
 
 cardDB::cardDB() {
-	message::backendInfo("Constructing DB");
+	msg::backendInfo("Constructing DB");
 	readFromDisk();
 }
 
 cardDB::~cardDB() {
-	message::backendInfo("Destorying DB");
+	msg::backendInfo("Destorying DB");
 	writeToDisk();
 }
 
-Status cardDB::add(rfidType rfid, card c){
+Status cardDB::add(cRFIDType rfid, card c){
     if(cardMap.find(rfid) != cardMap.end()){
-        message::cardExists(c.getID());
+        msg::cardExists(c.getID());
         return 1;
     }
 
     rfCardIterPair p=cardMap.insert(rfCardPair(rfid, c));
     if(p.second){
-        message::cardAddSuccess(c.getID());
+        msg::cardAddSuccess(c.getID());
         return 0;
     }
 
-    message::qError(string("Card not added"));
+    msg::qError(string("Card not added"));
     return -1;
 }
 
-card& cardDB::find(rfidType rfid){
+card& cardDB::find(cRFIDType rfid){
     rfCardMap::iterator it = cardMap.find(rfid);
     if(it == cardMap.end()){
         return emptyCard;
@@ -57,7 +57,7 @@ Status cardDB::monthlyUpdate(){
 Status cardDB::writeToDisk() {
 	fstream dbFile("cardDB.txt");
 	if (!dbFile.is_open()) {
-		message::backendErr("Can't open dbFile");
+		msg::backendErr("Can't open dbFile");
 		return 1;
 	}
 
@@ -67,7 +67,10 @@ Status cardDB::writeToDisk() {
 			<< iter->second.getID() << " "
 			<< iter->second.getCardType() << " "
 			<< iter->second.getBalance() << " "
-			<< iter->second.getRideCount() << " " << endl;
+			<< iter->second.getRideCount() << " " 
+			<< iter->second.getName() << " "
+			<< iter->second.getGender() << " "
+			<< iter->second.getUnit() << endl;
 		iter++;
 	}
 	dbFile.close();
@@ -78,17 +81,18 @@ Status cardDB::readFromDisk()
 {
 	ifstream dbFile("cardDB.txt");
 	if (!dbFile.is_open()) {
-		message::backendErr("Can't open dbFile");
+		msg::backendErr("Can't open dbFile");
 		return 1;
 	}
 
 	cardMap.clear();
 	char buffer[MAX_DB_LINE_LEN];
-	rfidType rfid;
-	idType id;
-	cardTypeT cardType;
-	balanceType balance;
-	rideCountType rideCount;
+	cRFIDType rfid;
+	cIDType cid;
+	cTypeT cType;
+	cBalanceType cBal;
+	cRideCountType cRideCount;
+	char nameBuf[BUF_LEN] = { 0 }, genBuf[2] = { 0 }, unitBuf[BUF_LEN] = { 0 };
 	int scanCount;
 
 	while (!dbFile.eof()) {
@@ -98,14 +102,15 @@ Status cardDB::readFromDisk()
 			continue;
 		}
 
-		scanCount=sscanf(buffer, "%u %llu %hu %lf %u",&rfid, &id, &cardType, &balance, &rideCount);
+		scanCount=sscanf(buffer, "%u %llu %hu %lf %u %s %s %s", &rfid, &cid, &cType, &cBal, &cRideCount, nameBuf, genBuf, unitBuf);
+		string sname(nameBuf), sgender(genBuf), sunit(unitBuf);
 		if (scanCount != 5) {
-			message::dbFileReadError(string(buffer));
+			msg::dbFileReadError(string(buffer));
 			cardMap.clear();
 			return -1;
 		}
 
-		card c(id, cardType, balance, rideCount);
+		card c(cid, cType, cBal, cRideCount, sname, sgender, sunit);
 		add(rfid, c);
 	}
 	return 0;

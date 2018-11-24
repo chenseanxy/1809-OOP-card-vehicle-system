@@ -5,7 +5,7 @@
 
 using namespace std;
 
-namespace message{
+namespace msg{
     //Core
 	void ui_input(string msg);
 
@@ -26,10 +26,10 @@ namespace message{
 	void cardCantRead();
 
     //Backend
-    void newCard(idType id);
-    void deletedCard(idType id);
-	void cardExists(idType id);
-	void cardAddSuccess(idType id);
+    void newCard(cIDType cid);
+    void deletedCard(cIDType cid);
+	void cardExists(cIDType cid);
+	void cardAddSuccess(cIDType cid);
 	void dbFileOpenError();
 	void dbFileReadError(string lastLine);
 };

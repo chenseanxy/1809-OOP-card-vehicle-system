@@ -1,17 +1,17 @@
-#include "message.h"
+#include "msg.h"
 #include <iostream>
 
 using namespace std;
 
 int mainTestMessage(){
-//    message::cardExists();
-//    message::cardAddSuccess();
+//    msg::cardExists();
+//    msg::cardAddSuccess();
 
-	message::freeRideSuccess();
-	message::paymentSuccess();
-	message::notEnoughBalance();
-	message::cardNotFound();
+	msg::freeRideSuccess();
+	msg::paymentSuccess();
+	msg::notEnoughBalance();
+	msg::cardNotFound();
 
-    message::qError("qError Test");
+    msg::qError("qError Test");
     return 0;
 }

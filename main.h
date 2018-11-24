@@ -3,7 +3,7 @@
 #include "types.h"
 #include "cardDB.h"
 #include "card.h"
-#include "message.h"
+#include "msg.h"
 #include "ui.h"
 
 extern cardDB cdb;

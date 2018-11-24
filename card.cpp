@@ -1,26 +1,30 @@
 #include "card.h"
-#include "message.h"
+#include "msg.h"
 #include <iostream>
 #include "main.h"
 
 using namespace std;
 
 card::card(){
-	id=0;
-	cardType = 0;
-	balance = 0;
-	rideCount = 0;
-	//message::qError("New empty card");
+	cid=0;
+	cType = 0;
+	cBal = 0;
+	cRideCount = 0;
+	//msg::qError("New empty card");
 }
-card::card(idType ID, cardTypeT cardT, balanceType bal, rideCountType rideC){
-    id=ID;
-    cardType=cardT;
-    balance=bal;
-    rideCount=rideC;
-    //message::newCard(id);
+card::card(cIDType ID, cTypeT cardT, cBalanceType bal, cRideCountType rideC, string name, string gender, string unit){
+    cid=ID;
+    cType=cardT;
+    cBal=bal;
+    cRideCount=rideC;
+	cName = name;
+	cGender = gender;
+	cUnit = unit;
+
+    //msg::newCard(cid);
 }
 card::~card(){
-    //message::deletedCard(getID());
+    //msg::deletedCard(getID());
 }
 
 bool card::operator==(card c)
@@ -28,21 +32,30 @@ bool card::operator==(card c)
 	return getID()==c.getID();
 }
 
-balanceType card::getBalance() const{
-    return balance;
+cBalanceType card::getBalance() const{
+    return cBal;
 }
-cardTypeT card::getCardType() const{
-    return cardType;
+cTypeT card::getCardType() const{
+    return cType;
 }
 string card::getCardTypeString() const{
 	string cardTypes[3] = { "Student", "Teacher", "Restricted" };
 	return cardTypes[getCardType()];
 }
-rideCountType card::getRideCount() const{
-    return rideCount;
+cRideCountType card::getRideCount() const{
+    return cRideCount;
 }
-idType card::getID() const{
-    return id;
+string card::getName() const {
+	return cName;
+}
+string card::getGender() const {
+	return cGender;
+}
+string card::getUnit() const {
+	return cUnit;
+}
+cIDType card::getID() const{
+    return cid;
 }
 
 bool card::getFreeRideAvail() const{
@@ -52,20 +65,20 @@ bool card::getFreeRideAvail() const{
     return false;
 }
 
-Status card::setID(idType ID){
-    id=ID;
+Status card::setID(cIDType ID){
+    cid=ID;
     return 0;
 }
-Status card::setCardType(cardTypeT cardT){
-    cardType=cardT;
+Status card::setCardType(cTypeT cardT){
+    cType=cardT;
     return 0;
 }
-Status card::setBalance(balanceType bal){
-    balance=bal;
+Status card::setBalance(cBalanceType bal){
+    cBal=bal;
     return 0;
 }
-Status card::setRideCount(rideCountType rideC){
-    rideCount=rideC;
+Status card::setRideCount(cRideCountType rideC){
+    cRideCount=rideC;
     return 0;
 }
 
@@ -95,12 +108,12 @@ Status card::freeRide(){
         return 1;
     }
 
-    message::freeRideSuccess();
+    msg::freeRideSuccess();
     return 0;
 }
 
 Status card::rejectRide(){
-    message::qError("Ride rejected");
+    msg::qError("Ride rejected");
     return 0;
 }
 
@@ -113,27 +126,27 @@ void card::debugPrintCard() const{
     << "[DEBUG] Ride Count: " << getRideCount() << endl;
 }
 
-Status card::charge(balanceType amount){
+Status card::charge(cBalanceType amount){
     if(amount<0){
-        message::qError(string("Cannot charge negative amount"));
+        msg::qError(string("Cannot charge negative amount"));
         return 1;
     }
 
     if(getBalance() < amount){
-        message::notEnoughBalance();
+        msg::notEnoughBalance();
         return 1;
     }
 
     setBalance(getBalance()-amount);
-    message::paymentSuccess();
+    msg::paymentSuccess();
     return 0;
 }
 
-Status card::swipe(vehNumType vehNum){
+Status card::swipe(vIDType vehNum){
     if(getID()==0){return -1;}
 	if (vdb.find(vehNum).isFull()) {
 		rejectRide();
-		message::frontendErr("Vehicle is full");
+		msg::frontendErr("Vehicle is full");
 	}
 
     switch(getCardType()){
@@ -180,6 +193,6 @@ Status card::swipe(vehNumType vehNum){
         }
 
     }
-    message::qError("Undefined error: card::swipe()");
+    msg::qError("Undefined error: card::swipe()");
     return -1;
 }
