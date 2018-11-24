@@ -10,8 +10,8 @@ card::card(){
 	cType = 0;
 	cBal = 0;
 	cRideCount = 0;
-	//msg::qError("New empty card");
 }
+
 card::card(cIDType ID, cTypeT cardT, cBalanceType bal, cRideCountType rideC, string name, string gender, string unit){
     cid=ID;
     cType=cardT;
@@ -20,15 +20,12 @@ card::card(cIDType ID, cTypeT cardT, cBalanceType bal, cRideCountType rideC, str
 	cName = name;
 	cGender = gender;
 	cUnit = unit;
-
-    //msg::newCard(cid);
 }
+
 card::~card(){
-    //msg::deletedCard(getID());
 }
 
-bool card::operator==(card c)
-{
+bool card::operator==(card c){
 	return getID()==c.getID();
 }
 
@@ -120,12 +117,15 @@ Status card::rejectRide(){
 }
 
 void card::debugPrintCard() const{
-    cout 
-    << "[DEBUG] -----Printing Card:-----" << endl
-    << "[DEBUG] ID: " << getID() << endl
-    << "[DEBUG] Card Type: " << getCardType() << endl
-    << "[DEBUG] Balance: " << getBalance() << endl
-    << "[DEBUG] Ride Count: " << getRideCount() << endl;
+	msg::debug("----Printing card----");
+	msg::debug("ID:   " + to_string(getID()));
+	msg::debug("Name: " + getName());
+	msg::debug("Type: " + to_string(getCardType())+"-"+getCardTypeString());
+	msg::debug("Ride Count: " + to_string(getID()));
+	msg::debug("Balance:    " + to_string(getBalance()));
+	msg::debug("Gender:     " + getGender());
+	msg::debug("Unit:       " + getUnit());
+	msg::debug("----Card Printed----");
 }
 
 Status card::charge(cBalanceType amount){
