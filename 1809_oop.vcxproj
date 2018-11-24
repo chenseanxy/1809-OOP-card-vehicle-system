@@ -104,8 +104,8 @@
     <ClCompile Include="cardDB.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message.cpp" />
-    <ClCompile Include="test_card.cpp" />
-    <ClCompile Include="test_message.cpp" />
+    <ClCompile Include="sch.cpp" />
+    <ClCompile Include="ui.cpp" />
     <ClCompile Include="veh.cpp" />
     <ClCompile Include="vehDB.cpp" />
   </ItemGroup>
@@ -113,12 +113,16 @@
     <ClInclude Include="card.h" />
     <ClInclude Include="cardDB.h" />
     <ClInclude Include="message.h" />
+    <ClInclude Include="sch.h" />
     <ClInclude Include="types.h" />
+    <ClInclude Include="ui.h" />
     <ClInclude Include="veh.h" />
     <ClInclude Include="vehDB.h" />
+    <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="cardDB.txt" />
+    <Text Include="vehDB.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

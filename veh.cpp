@@ -2,13 +2,18 @@
 #include "veh.h"
 #include "message.h"
 
-veh::veh(string lic, string driv, vehLoadType maxLo, times schT) {
+veh::veh() {
+	maxLoad = 0;
+}
+
+veh::veh(string lic, string driv, vehLoadType maxLo, sch schT, vehNumType nv) {
 	license = lic;
 	driver = driv;
 	load = 0;
-	maxLoad = maxLo;
 	vehTime = { 0,0,0 };
 	schTime = schT;
+	nextVeh = nv;
+	maxLoad = maxLo;
 }
 
 veh::~veh() {
@@ -28,8 +33,12 @@ bool veh::isFull() const {
 	return load >= maxLoad;
 }
 
-Status veh::getLoad() const {
+vehLoadType veh::getLoad() const {
 	return load;
+}
+
+vehLoadType veh::getMaxLoad() const {
+	return maxLoad;
 }
 
 string veh::getLicense() const {
@@ -40,12 +49,24 @@ string veh::getDriver() const {
 	return driver;
 }
 
-times veh::getSch() const {
+sch veh::getSch() const {
 	return schTime;
 }
 
-times veh::getTime() const {
+sch veh::getTime() const {
 	return vehTime;
+}
+
+vehNumType veh::getNextVeh() const {
+	return nextVeh;
+}
+
+void veh::print() const {
+	message::debug("License: " + getLicense());
+	message::debug("Driver: " + getDriver());
+	message::debug("Load / MaxLoad: " + to_string(getLoad()) + " / " + to_string(getMaxLoad()));
+	message::debug("isFull: " + to_string(isFull()));
+	//TODO: More debug info required
 }
 
 Status veh::incLoad() {

@@ -1,36 +1,20 @@
-#include "types.h"
-#include "cardDB.h"
-#include "card.h"
-#include "message.h"
+#include "main.h"
 
-cardDB maindb;
-
-rfidType phyRead(){
-    rfidType rfid=0;
-	scanf("%u", &rfid);
-    return rfid;
-}
-
-Status readCard(){
-	rfidType rfid = phyRead();
-	if (rfid == 0) {
-		message::cardCantRead();
-		return -1;
-	}
-
-	card& c = maindb.find(rfid);
-	if (c.getID() == 0) {
-		message::cardNotFound();
-		return -1;
-	}
-
-    return c.swipe();
-}
+cardDB cdb;
+vehDB vdb;
 
 int main() {
-	readCard();
-	readCard();
-	readCard();
+
+	cdb.readFromDisk();
+	vdb.readFromDisk();
+	
+	
+	ui::ui();
+
+
+	cdb.writeToDisk();
+	vdb.writeToDisk();
+
 	return 0;
 }
 

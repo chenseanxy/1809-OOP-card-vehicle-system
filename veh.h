@@ -1,5 +1,6 @@
 #pragma once
 #include "types.h"
+#include "sch.h"
 #include <string>
 
 using namespace std;
@@ -8,23 +9,28 @@ class veh {
 	string license;
 	string driver;
 	vehLoadType load;
-	vehLoadType static maxLoad;
-	times schTime;
-	times vehTime;
+	vehLoadType maxLoad;
+	sch schTime;
+	sch vehTime;
+	vehNumType nextVeh;
 
 public:
-	veh(string lic, string driv, vehLoadType maxLo, times schT);
+	veh();
+	veh(string lic, string driv, vehLoadType maxLo, sch schT, vehNumType nv);
 	~veh();
 
 	bool isArrOnTime(time_t acceptableDelta) const;
 	bool isDeptOnTime(time_t acceptableDelta) const;
 	bool isDestOnTime(time_t acceptableDelta) const;
 	bool isFull() const;
-	Status getLoad() const;
+	vehLoadType getLoad() const;
+	vehLoadType getMaxLoad() const;
 	string getLicense() const;
 	string getDriver() const;
-	times getSch() const;
-	times getTime() const;
+	sch getSch() const;
+	sch getTime() const;
+	vehNumType getNextVeh() const;
+	void print() const;
 
 	Status incLoad();
 	Status setLoad(vehLoadType amount);

@@ -1,12 +1,16 @@
 #include "card.h"
 #include "message.h"
 #include <iostream>
+#include "main.h"
 
 using namespace std;
 
 card::card(){
 	id=0;
-	message::qError("New empty card");
+	cardType = 0;
+	balance = 0;
+	rideCount = 0;
+	//message::qError("New empty card");
 }
 card::card(idType ID, cardTypeT cardT, balanceType bal, rideCountType rideC){
     id=ID;
@@ -125,8 +129,12 @@ Status card::charge(balanceType amount){
     return 0;
 }
 
-Status card::swipe(){
+Status card::swipe(vehNumType vehNum){
     if(getID()==0){return -1;}
+	if (vdb.find(vehNum).isFull()) {
+		rejectRide();
+		message::frontendErr("Vehicle is full");
+	}
 
     switch(getCardType()){
         

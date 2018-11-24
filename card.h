@@ -20,7 +20,7 @@ public:
     ~card();
     bool operator==(card c);
 
-    Status swipe();
+    Status swipe(vehNumType vehNum);
 
 	void debugPrintCard() const;
     Status showSwipeInfo() const;

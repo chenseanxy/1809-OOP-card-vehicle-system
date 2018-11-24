@@ -1,6 +1,9 @@
 #pragma once
 #include <ctime>
 
+#define MAX_DB_LINE_LEN 4096
+#define BUF_LEN 128
+
 //Core
 typedef int Status;
 
@@ -14,8 +17,6 @@ typedef unsigned int rideCountType;
 typedef unsigned int rfidType;
 typedef unsigned short vehNumType;
 typedef unsigned short vehLoadType;
-typedef struct times {
-	time_t tArr;
-	time_t tDept;
-	time_t tDest;
-};
+
+//Sch:
+typedef long long timeType;

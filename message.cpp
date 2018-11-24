@@ -3,6 +3,10 @@
 
 using namespace std;
 
+void message::ui_input(string msg) {
+	cout << msg << ": ";
+}
+
 //Frontend Core
 void message::frontendInfo(string msg){
     cout << "[INFO] " << msg << endl;
@@ -37,14 +41,6 @@ void message::paymentSuccess(){
 void message::notEnoughBalance(){
     frontendInfo("Not enough balance!");
 }
-void message::cardNotFound(){
-    frontendInfo("Invalid card!");
-}
-
-void message::cardCantRead()
-{
-	frontendErr("Cannot read card, try again?");
-}
 
 //Backend
 void message::cardExists(idType id){
@@ -53,9 +49,7 @@ void message::cardExists(idType id){
 void message::cardAddSuccess(idType id){
     backendInfo("Sucessfully added card " + to_string(id));
 }
-void message::dbFileOpenError(){
-	backendErr("Can't open dbFile");
-}
+
 void message::dbFileReadError(string lastLine){
 	backendErr("dbFile read error, last line: " + lastLine);
 }

@@ -10,6 +10,7 @@ typedef map<vehNumType, veh> vehMapType;
 
 class vehDB {
 	vehMapType vehMap;
+	veh emptyVeh;
 
 public:
 	vehDB();

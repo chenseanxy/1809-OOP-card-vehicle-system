@@ -7,6 +7,8 @@ using namespace std;
 
 namespace message{
     //Core
+	void ui_input(string msg);
+
     void frontendInfo(string msg);
     void frontendErr(string msg);
 

@@ -57,7 +57,7 @@ Status cardDB::monthlyUpdate(){
 Status cardDB::writeToDisk() {
 	fstream dbFile("cardDB.txt");
 	if (!dbFile.is_open()) {
-		message::dbFileOpenError();
+		message::backendErr("Can't open dbFile");
 		return 1;
 	}
 
@@ -78,12 +78,12 @@ Status cardDB::readFromDisk()
 {
 	ifstream dbFile("cardDB.txt");
 	if (!dbFile.is_open()) {
-		message::dbFileOpenError();
+		message::backendErr("Can't open dbFile");
 		return 1;
 	}
 
 	cardMap.clear();
-	char buffer[4096];
+	char buffer[MAX_DB_LINE_LEN];
 	rfidType rfid;
 	idType id;
 	cardTypeT cardType;
@@ -92,7 +92,7 @@ Status cardDB::readFromDisk()
 	int scanCount;
 
 	while (!dbFile.eof()) {
-		dbFile.getline(buffer, 4096);
+		dbFile.getline(buffer, MAX_DB_LINE_LEN);
 
 		if (buffer[0] == 0 || buffer[0] == '#') {
 			continue;
