@@ -9,7 +9,11 @@ cRFIDType ui::read::crfid() {
 }
 
 cIDType ui::read::cid() {
-	return cIDType();
+	cIDType r = 0;
+	if (!scanf("%llu", &r)) {
+		msg::frontendErr("cid read error");
+	}
+	return r;
 }
 
 cBalanceType ui::read::cbal() {
@@ -25,7 +29,11 @@ cRideCountType ui::read::cRideCount() {
 }
 
 vIDType ui::read::vid() {
-	return vIDType();
+	vIDType v = 0;
+	while (!scanf("%hu", &v)) {
+		msg::frontendErr("vid read error");
+	}
+	return v;
 }
 
 vLoadType ui::read::vload() {
@@ -36,9 +44,9 @@ vLoadType ui::read::vload() {
 Status ui::ui() {
 	int mode=0;
 	while (mode != -1) {
-		msg::ui_input("Please enter mode");
+		msg::inputMsg("Please enter mode");
 		while (scanf("%d", &mode) != 1) {
-			msg::ui_input("Please enter a valid number");
+			msg::inputMsg("Please enter a valid number");
 		}
 
 		switch (mode) {
@@ -48,13 +56,13 @@ Status ui::ui() {
 			ui::cardReader();
 			break;
 		case 2:
-			ui::cardDBOps();
+			ui::cardDB::main();
 			break;
 		case 3:
 			ui::vehOps();
 			break;
 		case 4:
-			ui::cardDBOps();
+			ui::vehDBOps();
 			break;
 		default:
 			msg::frontendErr("Selected ui mode is not available");
@@ -71,23 +79,94 @@ Status ui::cardReader(){
 	vIDType v;
 	v = ui::read::vid();
 
-	cRFIDType rfid = ui::read::crfid();
-	if (rfid == 0) {
-		msg::backendInfo("Exiting cardReader");
-	}
+	cRFIDType rfid;
+	while (true) {
+		rfid = ui::read::crfid();
+		if (rfid == 0) {
+			msg::backendInfo("Exiting cardReader");
+			break;
+		}
 
-	card& c = cdb.find(rfid);
-	if (c.getID() == 0) {
-		msg::frontendInfo("Invalid card, please retry");
-	}
+		card& c = cdb.find(rfid);
+		if (c.getID() == 0) {
+			msg::frontendInfo("Invalid card, please retry");
+		}
 
-	if (c.swipe(v)) {
-		msg::frontendErr("Scan failed, please retry");
+		if (c.swipe(v)) {
+			msg::frontendErr("Scan failed, please retry");
+		}
 	}
+	return 0;
 }
 
-Status ui::cardDBOps() {
-	return Status();
+Status ui::cardDB::main() {
+	int mode = 0;
+	msg::inputMsg("mode: 1-add, 2-revoke, 3-issue");
+	if (scanf("%d", &mode)) {
+		switch (mode) {
+		case 1:
+			add();
+			break;
+		case 2:
+			revoke();
+			break;
+		case 3:
+			issue();
+			break;
+		default:
+			break;
+		}
+	}
+
+	return 0;
+}
+
+Status ui::cardDB::add() {
+	msg::frontendInfo("cardDB-add");
+	cRFIDType rfid;
+	cIDType cid;
+	cTypeT cType;
+	cBalanceType cBal;
+	cRideCountType cRideCount;
+	char nameBuf[BUF_LEN] = { 0 }, genBuf[2] = { 0 }, unitBuf[BUF_LEN] = { 0 };
+	int scanCount;
+
+	msg::inputMsg("rfid, ID, Type, Bal, RideCount, Name, Gender, Unit");
+	scanCount = scanf("%u %llu %hu %lf %u %s %s %s", &rfid, &cid, &cType, &cBal, &cRideCount, nameBuf, genBuf, unitBuf);
+	if (scanCount != 8) {
+		msg::frontendErr("Invalid entry");
+		return -1;
+	}
+
+	string sname(nameBuf), sgender(genBuf), sunit(unitBuf);
+	card c(cid, cType, cBal, cRideCount, sname, sgender, sunit);
+	cdb.add(rfid, c);
+	msg::debug("card add success");
+
+	return 0;
+}
+
+Status ui::cardDB::revoke() {
+	msg::frontendInfo("cardDB-revoke");
+	msg::inputMsg("ID");
+	cIDType cid = ui::read::cid();
+	cRFIDType rfid = cdb.cidFind(cid);
+	if (rfid == 0) {
+		msg::frontendErr("ID not found");
+		return -1;
+	}
+	
+	return cdb.del(rfid);
+}
+
+Status ui::cardDB::issue() {
+	msg::frontendInfo("cardDB-issue");
+	int revResult = revoke();
+	if (revResult != 0) {
+		msg::frontendErr("Could not delete old card");
+		return -1;
+	}
+	return add();
 }
 
 Status ui::vehOps() {

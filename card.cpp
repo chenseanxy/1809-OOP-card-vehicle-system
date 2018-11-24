@@ -84,11 +84,13 @@ Status card::setRideCount(cRideCountType rideC){
 
 Status card::showSwipeInfo() const{
 	cout << "ID: " << getID() << endl
-		 << "Card Type:" << getCardTypeString() << endl
-		 << "Balance:" << getBalance() << endl
-		 << "Ride Counts This Month:" << getRideCount() << endl;
+		<< "姓名：" << getName() << endl
+		<< "卡类型: " << getCardTypeString() << endl
+		<< "余额: " << getBalance() << endl
+		<< "乘车次数: " << getRideCount() << endl;
+
 	if (getCardType() == 2 && getRideCount() == 21) {
-		cout << "Started charging this time." << endl;
+		msg::frontendInfo("本次开始计费");
 	}
 	
     return 0;
@@ -147,6 +149,7 @@ Status card::swipe(vIDType vehNum){
 	if (vdb.find(vehNum).isFull()) {
 		rejectRide();
 		msg::frontendErr("Vehicle is full");
+		return 1;
 	}
 
     switch(getCardType()){

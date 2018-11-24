@@ -103,7 +103,7 @@
     <ClCompile Include="card.cpp" />
     <ClCompile Include="cardDB.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="message.cpp" />
+    <ClCompile Include="msg.cpp" />
     <ClCompile Include="sch.cpp" />
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="veh.cpp" />

@@ -4,14 +4,18 @@
 #include <ostream>
 
 vehDB::vehDB() {
+	msg::backendInfo("Constructing vehDB");
+	readFromDisk();
 }
 
 vehDB::~vehDB() {
+	msg::backendInfo("Destroying vehDB");
+	writeToDisk();
 }
 
 Status vehDB::add(vIDType vehNum, veh v) {
-	if (vehMap.find(vehNum) == vehMap.end()) {
-		msg::backendErr("Cannot add vehicle " + to_string(vehNum) + " , veh exists");
+	if (vehMap.find(vehNum) != vehMap.end()) {
+		msg::backendErr("Cannot add vehicle " + to_string(vehNum) + v.getLicense() + " , veh exists");
 		return -1;
 	}
 

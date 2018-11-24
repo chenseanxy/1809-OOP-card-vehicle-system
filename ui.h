@@ -20,7 +20,12 @@ namespace ui {
 
 	Status ui();
 	Status cardReader();
-	Status cardDBOps();
+	namespace cardDB {
+		Status main();	
+		Status add();
+		Status revoke();
+		Status issue();
+	}
 	Status vehOps();
 	Status vehDBOps();
 }

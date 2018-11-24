@@ -19,7 +19,9 @@ public:
 	~cardDB();
 
 	Status add(cRFIDType rfid, card c);
+	Status del(cRFIDType rfid);
 	card& find(cRFIDType rfid);
+	cRFIDType cidFind(cIDType id);
 
 	void display();
 

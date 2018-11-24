@@ -4,12 +4,12 @@
 #include <fstream>
 
 cardDB::cardDB() {
-	msg::backendInfo("Constructing DB");
+	msg::backendInfo("Constructing cardDB");
 	readFromDisk();
 }
 
 cardDB::~cardDB() {
-	msg::backendInfo("Destorying DB");
+	msg::backendInfo("Destorying cardDB");
 	writeToDisk();
 }
 
@@ -29,13 +29,41 @@ Status cardDB::add(cRFIDType rfid, card c){
     return -1;
 }
 
-card& cardDB::find(cRFIDType rfid){
+Status cardDB::del(cRFIDType rfid) {
+	rfCardMap::iterator it = cardMap.find(rfid);
+	if (it == cardMap.end()) {
+		msg::backendErr("Cannot delete, card not found");
+		return -1;
+	}
+
+	return cardMap.erase(rfid);
+}
+
+card& cardDB::find(cRFIDType rfid) {
+
     rfCardMap::iterator it = cardMap.find(rfid);
     if(it == cardMap.end()){
         return emptyCard;
     }
     
     return it->second;
+}
+
+cRFIDType cardDB::cidFind(cIDType id) {
+	if (id == 0) {
+		return 0;
+	}
+
+	rfCardMap::iterator it;
+	for (it = cardMap.begin(); it != cardMap.end(); it++) {
+		if (it->second.getID() == id) {
+			break;
+		}
+	}
+	if (it == cardMap.end()) {
+		return 0;
+	}
+	return it->first;
 }
 
 void cardDB::display(){
@@ -103,13 +131,13 @@ Status cardDB::readFromDisk()
 		}
 
 		scanCount=sscanf(buffer, "%u %llu %hu %lf %u %s %s %s", &rfid, &cid, &cType, &cBal, &cRideCount, nameBuf, genBuf, unitBuf);
-		string sname(nameBuf), sgender(genBuf), sunit(unitBuf);
-		if (scanCount != 5) {
+		if (scanCount != 8) {
 			msg::dbFileReadError(string(buffer));
 			cardMap.clear();
 			return -1;
 		}
 
+		string sname(nameBuf), sgender(genBuf), sunit(unitBuf);
 		card c(cid, cType, cBal, cRideCount, sname, sgender, sunit);
 		add(rfid, c);
 	}

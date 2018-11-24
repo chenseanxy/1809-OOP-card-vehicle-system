@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void msg::ui_input(string msg) {
+void msg::inputMsg(string msg) {
 	cout << msg << ": ";
 }
 

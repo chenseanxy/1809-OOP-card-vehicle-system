@@ -7,7 +7,7 @@ using namespace std;
 
 namespace msg{
     //Core
-	void ui_input(string msg);
+	void inputMsg(string msg);
 
     void frontendInfo(string msg);
     void frontendErr(string msg);
@@ -22,14 +22,11 @@ namespace msg{
     void freeRideSuccess();
     void paymentSuccess();
     void notEnoughBalance();
-    void cardNotFound();
-	void cardCantRead();
 
     //Backend
     void newCard(cIDType cid);
     void deletedCard(cIDType cid);
 	void cardExists(cIDType cid);
 	void cardAddSuccess(cIDType cid);
-	void dbFileOpenError();
 	void dbFileReadError(string lastLine);
 };
