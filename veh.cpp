@@ -19,13 +19,13 @@ veh::veh(string lic, string driv, vLoadType maxLo, sch schT, vIDType nv) {
 veh::~veh() {
 }
 
-bool veh::isArrOnTime(time_t acceptableDelta = 120) const {
+bool veh::isArrOnTime(timeType acceptableDelta = 120) const {
 	return abs(schTime.tArr - vehTime.tArr) < acceptableDelta;
 }
-bool veh::isDeptOnTime(time_t acceptableDelta = 120) const {
+bool veh::isDeptOnTime(timeType acceptableDelta = 120) const {
 	return abs(schTime.tDept - vehTime.tDept) < acceptableDelta;
 }
-bool veh::isDestOnTime(time_t acceptableDelta = 120) const {
+bool veh::isDestOnTime(timeType acceptableDelta = 120) const {
 	return abs(schTime.tDest - vehTime.tDest) < acceptableDelta;
 }
 
@@ -82,15 +82,15 @@ Status veh::setLoad(vLoadType amount) {
 	return 0;
 }
 
-Status veh::timeArr(time_t t = time(NULL)) {
+Status veh::timeArr(timeType t = timeType(time(NULL))) {
 	vehTime.tArr = t;
 	return 0;
 }
-Status veh::timeDept(time_t t = time(NULL)) {
+Status veh::timeDept(timeType t = timeType(time(NULL))) {
 	vehTime.tDept = t;
 	return 0;
 }
-Status veh::timeDest(time_t t = time(NULL)) {
+Status veh::timeDest(timeType t = timeType(time(NULL))) {
 	vehTime.tDest = t;
 	return 0;
 }

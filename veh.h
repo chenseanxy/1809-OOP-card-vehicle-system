@@ -19,9 +19,9 @@ public:
 	veh(string lic, string driv, vLoadType maxLo, sch schT, vIDType nv);
 	~veh();
 
-	bool isArrOnTime(time_t acceptableDelta) const;
-	bool isDeptOnTime(time_t acceptableDelta) const;
-	bool isDestOnTime(time_t acceptableDelta) const;
+	bool isArrOnTime(timeType acceptableDelta) const;
+	bool isDeptOnTime(timeType acceptableDelta) const;
+	bool isDestOnTime(timeType acceptableDelta) const;
 	bool isFull() const;
 	vLoadType getLoad() const;
 	vLoadType getMaxLoad() const;
@@ -35,7 +35,7 @@ public:
 	Status incLoad();
 	Status setLoad(vLoadType amount);
 
-	Status timeArr(time_t t);
-	Status timeDept(time_t t);
-	Status timeDest(time_t t);
+	Status timeArr(timeType t);
+	Status timeDept(timeType t);
+	Status timeDest(timeType t);
 };
