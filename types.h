@@ -1,22 +1,52 @@
 #pragma once
 #include <ctime>
 
+//MAX_DB_LINE_LEN: defines the size of DB Line-reading buffer
 #define MAX_DB_LINE_LEN 4096
+
+//BUF_LEN: defines the size of one buffer for one value, used in string reading
 #define BUF_LEN 128
 
-//Core
+
+
+//Core:
+
+//Status: indicates the status of function return
 typedef int Status;
 
-//Card:
+
+
+//Card: card and cardOwner information
+
+//cRFIDType: stores card RFID data, used as key for cardDB
 typedef unsigned int cRFIDType;
+
+//cIDType: stores cardID (studentID or teacherID)
 typedef unsigned long long cIDType;
+
+//cBalanceType: stores card balance
 typedef double cBalanceType;
+
+//cTypeT: *(soon)deprecated, used to store cardType, now using subclasses
 typedef unsigned short cTypeT;
+
+//cRideCountType: stores ride count
 typedef unsigned int cRideCountType;
 
-//Veh:
+
+
+//Veh: vehicle information
+
+//vIDType: stores vehicle unique id, used as key for vehDB
 typedef unsigned short vIDType;
+
+//vLoadType: stores the load of a vehicle, as how many person are in the vehicle
 typedef unsigned short vLoadType;
 
-//Sch:
+
+
+
+//Sch: schedule information
+
+//timeType: time handling in schedules
 typedef long long timeType;
