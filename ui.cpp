@@ -1,4 +1,4 @@
-#include "ui.h"
+﻿#include "ui.h"
 
 cRFIDType ui::read::crfid() {
 	cRFIDType r=0;
@@ -40,11 +40,18 @@ vLoadType ui::read::vload() {
 	return vLoadType();
 }
 
+timeType ui::read::time() {
+	timeType t = 0;
+	while (!scanf("%lld", &t)) {
+		msg::frontendErr("time read error");
+	}
+}
+
 
 Status ui::ui() {
 	int mode=0;
 	while (mode != -1) {
-		msg::inputMsg("Please enter mode");
+		msg::inputMsg("Please enter mode, -1 to quit");
 		while (scanf("%d", &mode) != 1) {
 			msg::inputMsg("Please enter a valid number");
 		}
@@ -59,7 +66,7 @@ Status ui::ui() {
 			ui::cardDB::main();
 			break;
 		case 3:
-			ui::vehOps();
+			ui::vehOps::main();
 			break;
 		case 4:
 			ui::vehDBOps();
@@ -169,10 +176,51 @@ Status ui::cardDB::issue() {
 	return add();
 }
 
-Status ui::vehOps() {
-	return Status();
-}
+Status ui::vehOps::main() {
+	int mode=0;
+	vIDType vid;
+	vid = ui::read::vid();
+	veh& v = vdb.find(vid);
+	if (v.getMaxLoad() == 0) {
+		msg::frontendErr("vID invalid");
+		return 1;
+	}
+	
+	while (mode != -1) {
+		msg::inputMsg("Please enter mode, -1 to quit");
+		while (scanf("%d", &mode) != 1) {
+			msg::inputMsg("Please enter a valid number");
+		}
 
-Status ui::vehDBOps() {
-	return Status();
+		switch (mode) {
+		case -1:
+			msg::frontendInfo("Exiting vehOps");
+			break;
+		case 1:
+		case 2:
+		case 3: 
+		{
+			msg::inputMsg("Please enter time");
+			timeType t = ui::read::time();
+			switch (mode) {
+			case 1:
+				v.timeArr(t);
+				break;
+			case 2:
+				v.timeDept(t);
+				break;
+			case 3:
+				v.timeDest(t);
+				break;
+			default:
+				break;
+			}
+			break;
+		}
+		default:
+			msg::frontendErr("Selected vehOps mode is not available");
+			break;
+		}
+
+	}
 }

@@ -16,16 +16,22 @@ namespace ui {
 
 		vIDType vid();
 		vLoadType vload();
+
+		timeType time();
 	}
 
 	Status ui();
 	Status cardReader();
+
 	namespace cardDB {
 		Status main();	
 		Status add();
 		Status revoke();
 		Status issue();
 	}
-	Status vehOps();
+
+	namespace vehOps {
+		Status main();
+	}
 	Status vehDBOps();
 }
