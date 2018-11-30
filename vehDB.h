@@ -23,4 +23,7 @@ public:
 
 	Status writeToDisk();
 	Status readFromDisk();
+
+	bool isVehFull(vIDType vehNum);
+	Status rideVeh(vIDType vid, vLoadType load = 1);
 };

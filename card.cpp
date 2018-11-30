@@ -97,9 +97,9 @@ Status card::showInfo() const{
     return 0;
 }
 
-Status card::ride(){
+Status card::ride(vIDType vid){
     setRideCount(getRideCount()+1);
-    return 0;
+	return vdb.rideVeh(vid);
 }
 
 Status card::freeRide(){
@@ -144,58 +144,84 @@ Status card::charge(cBalanceType amount){
     return 0;
 }
 
-Status card::swipe(vIDType vehNum){
-    if(getID()==0){return -1;}
-	if (vdb.find(vehNum).isFull()) {
+inline Status preSwipeCheck(card c, vIDType vid){
+	if (c.getID() == 0) {
+		msg::frontendErr("Cant swipe empty card");
+		return -1;
+	}
+	if (vdb.isVehFull(vid)) {
+		msg::frontendErr("Vehicle full");
+		return 1;
+	}
+}
+
+
+studentCard::studentCard(string dbLine) 
+	: card(1)
+{
+	//TODO
+}
+
+Status studentCard::swipe(vIDType vid) {
+	if (!preSwipeCheck(*this, vid)) {
 		rejectRide();
-		msg::frontendErr("Vehicle is full");
 		return 1;
 	}
 
-    switch(getCardType()){
-        
-        //Student
-        case 0:{
-            Status chargeResult=charge();
-            if(chargeResult==0){
-                ride();
-                showSwipeInfo();
-            }
-            else{
-                rejectRide();
-            }
-            return 0;
-            break;
-        }
-        //Teacher
-        case 1:
-        ride();
-        showSwipeInfo();
-        return 0;
-        break;
-
-        //Restricted
-        case 2:{
-            if(getFreeRideAvail() == true){
-                freeRide();
-                ride();
-                showSwipeInfo();
-            }
-            else{
-                Status chargeResult=charge();
-                if(chargeResult==0){
-                    ride();
-                    showSwipeInfo();
-                }
-                else{
-                    rejectRide();
-                }
-            }
-            return 0;
-            break;
-        }
-
-    }
-    msg::qError("Undefined error: card::swipe()");
-    return -1;
+	Status chargeResult = charge();
+	if (chargeResult == 0) {
+		ride(vid);
+		showSwipeInfo();
+	}
+	else {
+		rejectRide();
+		return 1;
+	}
+	return 0;
 }
+
+teacherCard::teacherCard(string dbLine) 
+	: card(2)
+{
+	//TODO
+}
+
+Status teacherCard::swipe(vIDType vid) {
+	if (!preSwipeCheck(*this, vid)) {
+		rejectRide();
+		return 1;
+	}
+
+	ride(vid);
+	showSwipeInfo();
+	return 0;
+}
+
+restrictedCard::restrictedCard(string dbLine) 
+	: card(3)
+{
+	//TODO
+}
+
+Status restrictedCard::swipe(vIDType vid) {
+	if (getID() == 0) { return -1; }
+
+	if (getFreeRideAvail() == true) {
+		freeRide();
+		ride(vid);
+		showSwipeInfo();
+	}
+	else {
+		Status chargeResult = charge();
+		if (chargeResult == 0) {
+			ride(vid);
+			showSwipeInfo();
+		}
+		else {
+			rejectRide();
+		}
+	}
+	return 0;
+}
+
+

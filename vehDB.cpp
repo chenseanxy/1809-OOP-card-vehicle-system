@@ -111,3 +111,23 @@ Status vehDB::readFromDisk() {
 	return 0;
 
 }
+
+bool vehDB::isVehFull(vIDType vehNum) {
+	veh& v = find(vehNum);
+	if (v.isNull()){
+		msg::backendErr("isVehFull: veh not found " + to_string(vehNum));
+		return true;
+	}
+	if (v.isFull()) {
+		return true;
+	}
+
+	return false;
+}
+
+Status vehDB::rideVeh(vIDType vid, vLoadType load = 1) {
+	veh& v = find(vid);
+	if (v.isNull()) { return -1; }
+
+	v.incLoad(load);
+}

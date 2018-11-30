@@ -30,9 +30,10 @@ public:
 	sch getSch() const;
 	sch getTime() const;
 	vIDType getNextVeh() const;
+	bool isNull() const;
 	void print() const;
 
-	Status incLoad();
+	Status incLoad(vLoadType amount);
 	Status setLoad(vLoadType amount);
 
 	Status timeArr(timeType t);

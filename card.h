@@ -4,7 +4,7 @@
 #include "types.h"
 
 class card{
-    cTypeT cType;
+    static cTypeT cType;
     cIDType cid;
     cBalanceType cBal;
     cRideCountType cRideCount;
@@ -13,14 +13,17 @@ class card{
 	string cGender;
 	string cUnit;
 
+protected:
     Status charge(cBalanceType amount=2);
-    Status ride();
+    Status ride(vIDType vid);
     Status freeRide();
     Status rejectRide();
 
 public:
     card();
+	card(cTypeT cType);
     card(cIDType ID, cTypeT cardT, cBalanceType bal, cRideCountType rideC, string name, string gender, string unit);
+	card(string dbLine);
     ~card();
     bool operator==(card c);
 
@@ -45,4 +48,25 @@ public:
     Status setCardType(cTypeT cardT);
     Status setBalance(cBalanceType bal);
     Status setRideCount(cRideCountType rideC);
+};
+
+
+class studentCard : public card {
+public:
+	studentCard(string dbLine);
+	Status swipe(vIDType vehNum);
+
+};
+
+class teacherCard : public card {
+public:
+	teacherCard(string dbLine);
+	Status swipe(vIDType vehNum);
+};
+
+class restrictedCard : public card {
+public:
+	restrictedCard(string dbLine);
+	Status swipe(vIDType vehNum);
+
 };

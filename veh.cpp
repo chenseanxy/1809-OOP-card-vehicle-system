@@ -61,6 +61,10 @@ vIDType veh::getNextVeh() const {
 	return nextVeh;
 }
 
+bool veh::isNull() const {
+	return (maxLoad == 0);
+}
+
 void veh::print() const {
 	msg::debug("License: " + getLicense());
 	msg::debug("Driver: " + getDriver());
@@ -69,11 +73,11 @@ void veh::print() const {
 	//TODO: More debug info required
 }
 
-Status veh::incLoad() {
+Status veh::incLoad(vLoadType amount=1) {
 	if (isFull()) {
 		msg::frontendErr("Sorry, vehicle is full.");
 	}
-	load++;
+	load+=amount;
 	return 0;
 }
 
