@@ -1,20 +1,30 @@
 #include "card.h"
 #include "msg.h"
 #include <iostream>
+#include <string>
+#include <sstream>
 #include "main.h"
 
 using namespace std;
 
-card::card(){
+card::card()
+	:_cType(0)
+{
 	cid=0;
-	cType = 0;
 	cBal = 0;
 	cRideCount = 0;
 }
 
-card::card(cIDType ID, cTypeT cardT, cBalanceType bal, cRideCountType rideC, string name, string gender, string unit){
+card::card(cTypeT cardType) 
+	:_cType(cardType)
+{
+	
+}
+
+card::card(cIDType ID, cTypeT cardT, cBalanceType bal, cRideCountType rideC, string name, string gender, string unit)
+	:_cType(cardT)
+{
     cid=ID;
-    cType=cardT;
     cBal=bal;
     cRideCount=rideC;
 	cName = name;
@@ -33,7 +43,7 @@ cBalanceType card::getBalance() const{
     return cBal;
 }
 cTypeT card::getCardType() const{
-    return cType;
+    return _cType;
 }
 string card::getCardTypeString() const{
 	string cardTypes[3] = { "Student", "Teacher", "Restricted" };
@@ -66,10 +76,7 @@ Status card::setID(cIDType ID){
     cid=ID;
     return 0;
 }
-Status card::setCardType(cTypeT cardT){
-    cType=cardT;
-    return 0;
-}
+
 Status card::setBalance(cBalanceType bal){
     cBal=bal;
     return 0;
@@ -159,7 +166,9 @@ inline Status preSwipeCheck(card c, vIDType vid){
 studentCard::studentCard(string dbLine) 
 	: card(1)
 {
-	//TODO
+	stringstream ss;
+	ss << dbLine;
+	ss >> cid >> cBal >> cRideCount >> cName >> cGender >> cUnit;
 }
 
 Status studentCard::swipe(vIDType vid) {
@@ -183,7 +192,9 @@ Status studentCard::swipe(vIDType vid) {
 teacherCard::teacherCard(string dbLine) 
 	: card(2)
 {
-	//TODO
+	stringstream ss;
+	ss << dbLine;
+	ss >> cid >> cBal >> cRideCount >> cName >> cGender >> cUnit;
 }
 
 Status teacherCard::swipe(vIDType vid) {
@@ -200,7 +211,9 @@ Status teacherCard::swipe(vIDType vid) {
 restrictedCard::restrictedCard(string dbLine) 
 	: card(3)
 {
-	//TODO
+	stringstream ss;
+	ss << dbLine;
+	ss >> cid >> cBal >> cRideCount >> cName >> cGender >> cUnit;
 }
 
 Status restrictedCard::swipe(vIDType vid) {

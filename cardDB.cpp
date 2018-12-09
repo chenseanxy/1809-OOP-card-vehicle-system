@@ -2,6 +2,7 @@
 #include "msg.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 cardDB::cardDB() {
 	msg::backendInfo("Constructing cardDB");
@@ -114,31 +115,33 @@ Status cardDB::readFromDisk()
 	}
 
 	cardMap.clear();
-	char buffer[MAX_DB_LINE_LEN];
-	cRFIDType rfid;
-	cIDType cid;
-	cTypeT cType;
-	cBalanceType cBal;
-	cRideCountType cRideCount;
-	char nameBuf[BUF_LEN] = { 0 }, genBuf[2] = { 0 }, unitBuf[BUF_LEN] = { 0 };
-	int scanCount;
 
 	while (!dbFile.eof()) {
-		dbFile.getline(buffer, MAX_DB_LINE_LEN);
+		string dbLine, cardConstruct;
+		getline(dbFile, dbLine);
 
-		if (buffer[0] == 0 || buffer[0] == '#') {
+		if (dbLine[0] == 0 || dbLine[0] == '#') {
 			continue;
 		}
 
-		scanCount=sscanf(buffer, "%u %llu %hu %lf %u %s %s %s", &rfid, &cid, &cType, &cBal, &cRideCount, nameBuf, genBuf, unitBuf);
-		if (scanCount != 8) {
-			msg::dbFileReadError(string(buffer));
-			cardMap.clear();
-			return -1;
+		stringstream ss;
+		ss << dbLine;
+		card c;
+		cRFIDType rfid;
+		cTypeT cardType;
+		ss >> rfid >> cardType >> noskipws >> cardConstruct;
+
+		switch (cardType) {
+		case 1:
+			c = studentCard(cardConstruct);
+		case 2:
+			c = teacherCard(cardConstruct);
+		case 3:
+			c = restrictedCard(cardConstruct);
+		default:
+			break;
 		}
 
-		string sname(nameBuf), sgender(genBuf), sunit(unitBuf);
-		card c(cid, cType, cBal, cRideCount, sname, sgender, sunit);
 		add(rfid, c);
 	}
 	return 0;
