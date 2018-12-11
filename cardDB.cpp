@@ -14,20 +14,20 @@ cardDB::~cardDB() {
 	writeToDisk();
 }
 
-Status cardDB::add(cRFIDType rfid, card c){
-    if(cardMap.find(rfid) != cardMap.end()){
-        msg::cardExists(c.getID());
-        return 1;
-    }
+Status cardDB::add(cRFIDType rfid, card c) {
+	if (cardMap.find(rfid) != cardMap.end()) {
+		msg::cardExists(c.getID());
+		return 1;
+	}
 
-    rfCardIterPair p=cardMap.insert(rfCardPair(rfid, c));
-    if(p.second){
-        msg::cardAddSuccess(c.getID());
-        return 0;
-    }
+	rfCardIterPair p = cardMap.insert(rfCardPair(rfid, c));
+	if (p.second) {
+		msg::cardAddSuccess(c.getID());
+		return 0;
+	}
 
-    msg::qError(string("Card not added"));
-    return -1;
+	msg::qError(string("Card not added"));
+	return -1;
 }
 
 Status cardDB::del(cRFIDType rfid) {
@@ -42,12 +42,12 @@ Status cardDB::del(cRFIDType rfid) {
 
 card& cardDB::find(cRFIDType rfid) {
 
-    rfCardMap::iterator it = cardMap.find(rfid);
-    if(it == cardMap.end()){
-        return emptyCard;
-    }
-    
-    return it->second;
+	rfCardMap::iterator it = cardMap.find(rfid);
+	if (it == cardMap.end()) {
+		return emptyCard;
+	}
+
+	return it->second;
 }
 
 cRFIDType cardDB::cidFind(cIDType id) {
@@ -67,19 +67,19 @@ cRFIDType cardDB::cidFind(cIDType id) {
 	return it->first;
 }
 
-void cardDB::display(){
-    rfCardMap::iterator iter=cardMap.begin();
-    while(iter != cardMap.end()){
-        iter->second.debugPrintCard();
-        iter++;
-    }
+void cardDB::display() {
+	rfCardMap::iterator iter = cardMap.begin();
+	while (iter != cardMap.end()) {
+		iter->second.debugPrintCard();
+		iter++;
+	}
 }
 
-Status cardDB::monthlyUpdate(){
-    rfCardMap::iterator iter;
-    for(iter=cardMap.begin(); iter!=cardMap.end(); iter++){
-        iter->second.setRideCount(0);
-    }
+Status cardDB::monthlyUpdate() {
+	rfCardMap::iterator iter;
+	for (iter = cardMap.begin(); iter != cardMap.end(); iter++) {
+		iter->second.setRideCount(0);
+	}
 	return 0;
 }
 
@@ -92,22 +92,16 @@ Status cardDB::writeToDisk() {
 
 	rfCardMap::iterator iter = cardMap.begin();
 	while (iter != cardMap.end()) {
-		//TODO: Impl write handler for every card type
 		dbFile << iter->first << " "
-			<< iter->second.getID() << " "
-			<< iter->second.getCardType() << " "
-			<< iter->second.getBalance() << " "
-			<< iter->second.getRideCount() << " " 
-			<< iter->second.getName() << " "
-			<< iter->second.getGender() << " "
-			<< iter->second.getUnit() << endl;
+			//Use card's own write handler
+			<< iter->second.writeCard() << endl;
 		iter++;
 	}
 	dbFile.close();
 	return 0;
 }
 
-Status cardDB::readFromDisk(){
+Status cardDB::readFromDisk() {
 	ifstream dbFile("cardDB.txt");
 	if (!dbFile.is_open()) {
 		msg::backendErr("Can't open dbFile");
@@ -128,7 +122,7 @@ Status cardDB::readFromDisk(){
 			continue;
 		}
 
-		card* c= &card();
+		card* c = &card();
 		cRFIDType rfid;
 		cTypeT cardType;
 
