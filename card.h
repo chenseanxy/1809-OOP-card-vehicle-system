@@ -4,7 +4,8 @@
 #include "types.h"
 
 class card{
-    static cTypeT cType;
+protected:
+    const cTypeT _cType;
     cIDType cid;
     cBalanceType cBal;
     cRideCountType cRideCount;
@@ -13,7 +14,6 @@ class card{
 	string cGender;
 	string cUnit;
 
-protected:
     Status charge(cBalanceType amount=2);
     Status ride(vIDType vid);
     Status freeRide();
@@ -45,7 +45,6 @@ public:
 	string getUnit() const;
 
     Status setID(cIDType ID);
-    Status setCardType(cTypeT cardT);
     Status setBalance(cBalanceType bal);
     Status setRideCount(cRideCountType rideC);
 };
@@ -69,4 +68,16 @@ public:
 	restrictedCard(string dbLine);
 	Status swipe(vIDType vehNum);
 
+};
+
+class tempCard : public card {
+	time_t expTime;
+
+public:
+	tempCard(string dbLine);
+	Status swipe(vIDType vehNum);
+
+	Status renewExpTime(time_t newExpTime);
+	time_t getExpTime();
+	bool isExpired();
 };

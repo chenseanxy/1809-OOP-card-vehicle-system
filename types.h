@@ -27,7 +27,7 @@ typedef unsigned long long cIDType;
 //cBalanceType: stores card balance
 typedef double cBalanceType;
 
-//cTypeT: *(soon)deprecated, used to store cardType, now using subclasses
+//cTypeT: used to store cardType, now using subclasses
 typedef unsigned short cTypeT;
 
 //cRideCountType: stores ride count

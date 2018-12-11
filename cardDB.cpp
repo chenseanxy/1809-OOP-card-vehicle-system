@@ -92,6 +92,7 @@ Status cardDB::writeToDisk() {
 
 	rfCardMap::iterator iter = cardMap.begin();
 	while (iter != cardMap.end()) {
+		//TODO: Impl write handler for every card type
 		dbFile << iter->first << " "
 			<< iter->second.getID() << " "
 			<< iter->second.getCardType() << " "
@@ -106,43 +107,52 @@ Status cardDB::writeToDisk() {
 	return 0;
 }
 
-Status cardDB::readFromDisk()
-{
+Status cardDB::readFromDisk(){
 	ifstream dbFile("cardDB.txt");
 	if (!dbFile.is_open()) {
 		msg::backendErr("Can't open dbFile");
 		return 1;
 	}
 
+	//Start the map at a clean state
 	cardMap.clear();
 
 	while (!dbFile.eof()) {
 		string dbLine, cardConstruct;
+		stringstream ss;
 		getline(dbFile, dbLine);
+		ss << dbLine;
 
 		if (dbLine[0] == 0 || dbLine[0] == '#') {
+			//Ignore if line start as null or #
 			continue;
 		}
 
-		stringstream ss;
-		ss << dbLine;
-		card c;
+		card* c= &card();
 		cRFIDType rfid;
 		cTypeT cardType;
-		ss >> rfid >> cardType >> noskipws >> cardConstruct;
 
+		ss >> rfid >> cardType;
+		getline(ss, cardConstruct); //throw the rest of ss to handler string
+
+		//Switching handlers for different card types
 		switch (cardType) {
 		case 1:
-			c = studentCard(cardConstruct);
+			c = &studentCard(cardConstruct);
+			break;
 		case 2:
-			c = teacherCard(cardConstruct);
+			c = &teacherCard(cardConstruct);
+			break;
 		case 3:
-			c = restrictedCard(cardConstruct);
+			c = &restrictedCard(cardConstruct);
+			break;
 		default:
+			//No match catcher
+			msg::backendErr("Card Type not found: " + to_string(cardType));
 			break;
 		}
 
-		add(rfid, c);
+		add(rfid, *c);
 	}
 	return 0;
 }
