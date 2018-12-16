@@ -1,3 +1,9 @@
+/*************************
+*	ui.h
+*	Defines ui namespace and its handler subspaces
+*	Handles console interface related operations
+*************************/
+
 #pragma once
 
 #include "types.h"

@@ -1,3 +1,9 @@
+/*************************
+*	msg.h
+*	Defines msg (message) namespace
+*	Handles the display of messages and alerts
+*************************/
+
 #pragma once
 
 #include "types.h"

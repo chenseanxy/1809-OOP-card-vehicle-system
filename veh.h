@@ -1,3 +1,9 @@
+/*************************
+*	veh.h
+*	Defines veh (vehicle) class
+*	Handles vehicle related operations
+*************************/
+
 #pragma once
 #include "types.h"
 #include "sch.h"

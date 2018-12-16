@@ -1,3 +1,9 @@
+/*************************
+*	card.h
+*	Defines card class and card-type related subclasses
+*	Handles card and card-owner related operations
+*************************/
+
 #pragma once
 
 #include "msg.h"

@@ -1,3 +1,9 @@
+/*************************
+*	cardDB.h
+*	Defines cardDB (card database) class
+*	Handles card storage related operations
+*************************/
+
 #pragma once
 
 #include <map>

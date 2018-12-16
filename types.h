@@ -1,3 +1,9 @@
+/*************************
+*	types.h
+*	Defines useful types for the project
+*************************/
+
+
 #pragma once
 #include <ctime>
 
@@ -42,7 +48,6 @@ typedef unsigned short vIDType;
 
 //vLoadType: stores the load of a vehicle, as how many person are in the vehicle
 typedef unsigned short vLoadType;
-
 
 
 

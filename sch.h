@@ -1,3 +1,9 @@
+/*************************
+*	sch.h
+*	Defines sch (schedule) class
+*	Handles vehicle schedule related operations
+*************************/
+
 #pragma once
 #include "types.h"
 #include <ostream>

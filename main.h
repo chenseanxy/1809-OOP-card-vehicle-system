@@ -1,3 +1,9 @@
+/*************************
+*	main.h
+*	Defines databases as global variable
+*	Program entry
+*************************/
+
 #pragma once
 
 #include "types.h"

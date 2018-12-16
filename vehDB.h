@@ -1,3 +1,9 @@
+/*************************
+*	vehDB.h
+*	Defines vehDB (vehicle database) class
+*	Handles vehicle storage operations
+*************************/
+
 #pragma once
 
 #include "types.h"
