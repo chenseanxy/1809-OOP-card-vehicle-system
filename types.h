@@ -14,15 +14,18 @@
 #define BUF_LEN 128
 
 
-
-//Core:
+/************
+*	Core
+************/
 
 //Status: indicates the status of function return
 typedef int Status;
 
 
-
-//Card: card and cardOwner information
+/************
+*	Card
+* card and cardOwner information
+************/
 
 //cRFIDType: stores card RFID data, used as key for cardDB
 typedef unsigned int cRFIDType;
@@ -40,8 +43,10 @@ typedef unsigned short cTypeT;
 typedef unsigned int cRideCountType;
 
 
-
-//Veh: vehicle information
+/************
+*	Veh
+* vehicle information
+************/
 
 //vIDType: stores vehicle unique id, used as key for vehDB
 typedef unsigned short vIDType;
@@ -50,8 +55,10 @@ typedef unsigned short vIDType;
 typedef unsigned short vLoadType;
 
 
-
-//Sch: schedule information
+/************
+*	Sch
+* schedule information
+************/
 
 //timeType: time handling in schedules
 typedef long long timeType;

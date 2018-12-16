@@ -12,7 +12,14 @@
 #include "msg.h"
 #include "main.h"
 
+//	ui: 
+//	namespace to handle all console events
+//	use sub-namespaces to handle modes
 namespace ui {
+	
+	//	read sub-namespace: (decrepated)
+	//	handles reading from console
+	//	for common data types
 	namespace read {
 		cRFIDType crfid();
 		cIDType cid();
@@ -26,9 +33,20 @@ namespace ui {
 		timeType time();
 	}
 
+	//	ui(): main console logic
+	//	input mode to switch between modes
+	//	1-cardReader, 2-cardDB
+	//	3-vehOps, 4-vehDB
+	//	-1 to quit
 	Status ui();
+
+	//	cardReader(): cardReader mode
+	//	actions: reads vehNum from console
+	//			 then swipes every card by inputing rfid
+	//			 0 as rfid to quit
 	Status cardReader();
 
+	//	cardDB: card database operations mode
 	namespace cardDB {
 		Status main();	
 		Status add();
