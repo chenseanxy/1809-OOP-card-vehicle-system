@@ -111,7 +111,7 @@ Status card::freeRide() {
 		return 1;
 	}
 
-	msg::freeRideSuccess();
+	msg::frontendInfo("Enjoy your free ride!");
 	return 0;
 }
 
@@ -149,7 +149,7 @@ void card::debugPrintCard() const {
 Status card::charge(cBalanceType amount) {
 	if (amount < 0) {
 		msg::qError(string("Cannot charge negative amount"));
-		return 1;
+		return 2;
 	}
 
 	if (getBalance() < amount) {
@@ -188,8 +188,10 @@ Status studentCard::swipe(vIDType vid) {
 		return 1;
 	}
 
+	//	charge the card of default amount
 	Status chargeResult = charge();
 	if (chargeResult == 0) {
+		//	charge is successful
 		ride(vid);
 		showSwipeInfo();
 	}

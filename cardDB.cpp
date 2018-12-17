@@ -34,7 +34,7 @@ Status cardDB::del(cRFIDType rfid) {
 	rfCardMap::iterator it = cardMap.find(rfid);
 	if (it == cardMap.end()) {
 		msg::backendErr("Cannot delete, card not found");
-		return -1;
+		return 1;
 	}
 
 	return cardMap.erase(rfid);

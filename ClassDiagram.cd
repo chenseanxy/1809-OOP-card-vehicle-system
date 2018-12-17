@@ -1,45 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="card" Collapsed="true">
-    <Position X="1.25" Y="1.75" Width="1.5" />
+    <Position X="4.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIABICARAAgQBCAAAAACQQoCAgAABABBCACAAABCgA=</HashCode>
+      <HashCode>CAKCBJIARAEkQBKAAAAAAQQgCAgAAAABBCAGAgABCAA=</HashCode>
       <FileName>card.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="cardDB" Collapsed="true">
-    <Position X="3.75" Y="1.75" Width="1.5" />
+    <Position X="10.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAQAIAAAAAAAAQAEgAAAAgAAEACAAACAAAAAACAAA=</HashCode>
+      <HashCode>AAAAQAIAACAAAAAQAEgAgAAgAAEACAAACAAAAAACAAA=</HashCode>
       <FileName>cardDB.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="veh" Collapsed="true">
-    <Position X="1.25" Y="3" Width="1.5" />
+    <Position X="10.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAAAAAAAGAgAAAAAAAAAIAAAAEAAAAAAAA=</HashCode>
+      <HashCode>CAQAAAAAAoEA4IAAAeAgDgCCAAAAIAEAAAEICAEAAAA=</HashCode>
       <FileName>veh.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="vehDB" Collapsed="true">
-    <Position X="3.75" Y="3" Width="1.5" />
+    <Position X="12.25" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAAAAAAAAgAAAAgAAEAAAAECAAAAAACACA=</HashCode>
+      <HashCode>AABAAAAAAIAAAAAAAAgAAAAgAAEAAAQUCAAAAAACACA=</HashCode>
       <FileName>vehDB.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="sch" Collapsed="true">
-    <Position X="1.25" Y="4.25" Width="1.5" />
+    <Position X="12.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ARAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ABAAAAAAAIAAAGAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>sch.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="schDB" Collapsed="true">
-    <Position X="3.75" Y="4.25" Width="1.5" />
+  <Class Name="restrictedCard" Collapsed="true">
+    <Position X="1.25" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAAAAAAAAAAAAAAAAAgAAAAgAAEAAAAACAAIBAACAAA=</HashCode>
-      <FileName>schDB.h</FileName>
+      <HashCode>IAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>card.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="studentCard" Collapsed="true">
+    <Position X="5.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>card.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="teacherCard" Collapsed="true">
+    <Position X="3.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>card.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="tempCard" Collapsed="true">
+    <Position X="8" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAIAAAAAACAAAAAAAAAAAAAAACAAAAAAgAgAAAAA=</HashCode>
+      <FileName>card.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />
