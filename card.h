@@ -97,7 +97,7 @@ public:
 	//	card(dbLine): creates card from one line of dbfile
 	//	param: one line of db string
 	//	overwritten by subclasses
-	card(string dbLine);
+	//	card(string dbLine);
 	
 	//	~card(): deconstructor, nothing special
 	~card();
@@ -109,6 +109,7 @@ public:
 	//	swipe(vehNum): exectutes card swipe action from veh
 	//	param: vehNum as the executer of swipe action
 	//	action: nothing in base class
+	//	return: 0-Successful, 1-Rejected
 	virtual Status swipe(vIDType vehNum);
 
 	//	writeCard(): convert cardObj into
@@ -116,7 +117,7 @@ public:
 	//	handles all paramaters defined in base class
 	//	format: 
 	//	ID cardType balance rideCount name gender unit
-	virtual string writeCard();
+	virtual string writeCard() const;
 	
 	//	debugPrintCard(): (deprecated) (non-functional)
 	//		prints out all info about the card
@@ -124,7 +125,7 @@ public:
 
 	//	showSwipeInfo(): shows ui related info when
 	//					 card is swiped
-	Status showSwipeInfo() const;
+	virtual Status showSwipeInfo() const;
 
 	//	showInfo(): (deprecated) (non-functional)
 	//		shows all info about the card
@@ -198,6 +199,7 @@ class restrictedCard : public card {
 public:
 	restrictedCard(string dbLine);
 	Status swipe(vIDType vehNum);
+	Status showSwipeInfo() const;
 };
 
 
@@ -212,14 +214,18 @@ class tempCard : public card {
 public:
 	tempCard(string dbLine);
 	Status swipe(vIDType vehNum);
-	string writeCard();
+	Status showSwipeInfo() const;
+	string writeCard() const;
 
 	//	renewExpTime(): renew the expiration time
 	//	param: time_t newExpirationTime
+	//	return: status code, 0-Successful
+	//			1-Cannot renew backwards
 	Status renewExpTime(time_t newExpTime);
 
-	time_t getExpTime();
+	time_t getExpTime() const;
+	string getExpTimeStr() const;
 	
 	//	tempCard.isExpired(): returns if the card is expired
-	bool isExpired();
+	bool isExpired() const;
 };

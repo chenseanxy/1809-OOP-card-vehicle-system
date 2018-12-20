@@ -36,6 +36,11 @@ bool card::operator==(card c) {
 	return getID() == c.getID();
 }
 
+Status card::swipe(vIDType vehNum) {
+	msg::backendErr("Base class: cannot swipe");
+	return 1;
+}
+
 cBalanceType card::getBalance() const {
 	return cBal;
 }
@@ -90,10 +95,6 @@ Status card::showSwipeInfo() const {
 		<< "余额: " << getBalance() << endl
 		<< "乘车次数: " << getRideCount() << endl;
 
-	if (getCardType() == 2 && getRideCount() == 21) {
-		msg::frontendInfo("本次开始计费");
-	}
-
 	return 0;
 }
 Status card::showInfo() const {
@@ -120,7 +121,7 @@ Status card::rejectRide() {
 	return 0;
 }
 
-string card::writeCard() {
+string card::writeCard() const {
 	stringstream ss;
 	ss << getID() << " "
 		<< getCardType() << " "
@@ -251,11 +252,85 @@ Status restrictedCard::swipe(vIDType vid) {
 	return 0;
 }
 
-string tempCard::writeCard() {
+Status restrictedCard::showSwipeInfo() const {
+	card::showSwipeInfo();
+
+	if (getRideCount() == 21) {
+		msg::frontendInfo("本次开始计费");
+	}
+	return 0;
+}
+
+tempCard::tempCard(string dbLine)
+	:card(4) {
+	stringstream ss;
+	int cardType;
+	ss << dbLine;
+	ss >> cid >> cardType >> cBal >> cRideCount >> cName >> cGender >> cUnit >> expTime;
+}
+
+Status tempCard::swipe(vIDType vehNum) {
+	if (!preSwipeCheck(*this, vehNum)) {
+		rejectRide();
+		return 1;
+	}
+
+	//	charge the card of default amount
+	Status chargeResult = charge();
+	if (isExpired()) {
+		rejectRide();
+		return 1;
+	}
+	else if (chargeResult == 0) {
+		//	charge is successful
+		ride(vehNum);
+		showSwipeInfo();
+	}
+	else {
+		rejectRide();
+		return 1;
+	}
+	return 0;
+}
+
+Status tempCard::showSwipeInfo() const {
+	card::showSwipeInfo();
+	cout << "有效期: " << getExpTimeStr() << endl;
+	return 0;
+}
+
+string tempCard::writeCard() const {
 	stringstream ss;
 	ss << card::writeCard() << " "
 		<< getExpTime();
 	string output;
 	getline(ss, output);
 	return output;
+}
+
+Status tempCard::renewExpTime(time_t newExpTime) {
+	if (newExpTime < expTime) {
+		msg::backendErr("Cannot renew expTime backwards");
+		return 1;
+	}
+	else {
+		expTime = newExpTime;
+	}
+	
+	return 0;
+}
+
+time_t tempCard::getExpTime() const {
+	return expTime;
+}
+
+string tempCard::getExpTimeStr() const {
+	char bfr[TIME_FMT_BFR_LEN] = { 0 };
+	time_t exp = getExpTime();
+	strftime(bfr, sizeof(bfr), "%Y-%m-%d", localtime(&exp));
+	return string(bfr);
+}
+
+bool tempCard::isExpired() const {
+	return time(0) > getExpTime();
 }

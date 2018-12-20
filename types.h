@@ -64,3 +64,5 @@ typedef unsigned short vLoadType;
 
 //	timeType: time handling in schedules
 typedef long long timeType;
+
+#define TIME_FMT_BFR_LEN 64
