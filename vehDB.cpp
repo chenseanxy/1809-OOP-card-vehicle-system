@@ -125,7 +125,7 @@ bool vehDB::isVehFull(vIDType vehNum) {
 	return false;
 }
 
-Status vehDB::rideVeh(vIDType vid, vLoadType load = 1) {
+Status vehDB::rideVeh(vIDType vid, vLoadType load) {
 	veh& v = find(vid);
 	if (v.isNull()) { return -1; }
 

@@ -90,10 +90,10 @@ Status card::setRideCount(cRideCountType rideC) {
 
 Status card::showSwipeInfo() const {
 	cout << "ID: " << getID() << endl
-		<< "姓名：" << getName() << endl
-		<< "卡类型: " << getCardTypeString() << endl
-		<< "余额: " << getBalance() << endl
-		<< "乘车次数: " << getRideCount() << endl;
+		<< "Name：" << getName() << endl
+		<< "Type: " << getCardTypeString() << endl
+		<< "Bal: " << getBalance() << endl
+		<< "RideC: " << getRideCount() << endl;
 
 	return 0;
 }
@@ -172,19 +172,19 @@ inline Status preSwipeCheck(card c, vIDType vid) {
 		msg::frontendErr("Vehicle full");
 		return 1;
 	}
+	return 0;
 }
 
 
 studentCard::studentCard(string dbLine)
 	: card(1) {
 	stringstream ss;
-	int cardType;
 	ss << dbLine;
-	ss >> cid >> cardType >> cBal >> cRideCount >> cName >> cGender >> cUnit;
+	ss >> cid >> cBal >> cRideCount >> cName >> cGender >> cUnit;
 }
 
 Status studentCard::swipe(vIDType vid) {
-	if (!preSwipeCheck(*this, vid)) {
+	if (preSwipeCheck(*this, vid)) {
 		rejectRide();
 		return 1;
 	}
@@ -207,13 +207,12 @@ Status studentCard::swipe(vIDType vid) {
 teacherCard::teacherCard(string dbLine)
 	: card(2) {
 	stringstream ss;
-	int cardType;
 	ss << dbLine;
-	ss >> cid >> cardType >> cBal >> cRideCount >> cName >> cGender >> cUnit;
+	ss >> cid >> cBal >> cRideCount >> cName >> cGender >> cUnit;
 }
 
 Status teacherCard::swipe(vIDType vid) {
-	if (!preSwipeCheck(*this, vid)) {
+	if (preSwipeCheck(*this, vid)) {
 		rejectRide();
 		return 1;
 	}
@@ -226,9 +225,8 @@ Status teacherCard::swipe(vIDType vid) {
 restrictedCard::restrictedCard(string dbLine)
 	: card(3) {
 	stringstream ss;
-	int cardType;
 	ss << dbLine;
-	ss >> cid >> cardType >> cBal >> cRideCount >> cName >> cGender >> cUnit;
+	ss >> cid >> cBal >> cRideCount >> cName >> cGender >> cUnit;
 }
 
 Status restrictedCard::swipe(vIDType vid) {
@@ -256,7 +254,7 @@ Status restrictedCard::showSwipeInfo() const {
 	card::showSwipeInfo();
 
 	if (getRideCount() == 21) {
-		msg::frontendInfo("本次开始计费");
+		msg::frontendInfo("Started charging");
 	}
 	return 0;
 }
@@ -264,9 +262,8 @@ Status restrictedCard::showSwipeInfo() const {
 tempCard::tempCard(string dbLine)
 	:card(4) {
 	stringstream ss;
-	int cardType;
 	ss << dbLine;
-	ss >> cid >> cardType >> cBal >> cRideCount >> cName >> cGender >> cUnit >> expTime;
+	ss >> cid >> cBal >> cRideCount >> cName >> cGender >> cUnit >> expTime;
 }
 
 Status tempCard::swipe(vIDType vehNum) {

@@ -8,12 +8,12 @@
 #include <ctime>
 
 //	MAX_DB_LINE_LEN: defines the size of DB Line-reading buffer
-//	Decrepated: now changed to stringStream impl
-//	#define MAX_DB_LINE_LEN 4096
+//	
+#define MAX_DB_LINE_LEN 4096
 
 //	BUF_LEN: defines the size of one buffer for one value, used in string reading
-//	Decrepated: now changed to stringStream impl
-//	#define BUF_LEN 128
+//	
+#define BUF_LEN 128
 
 
 /************

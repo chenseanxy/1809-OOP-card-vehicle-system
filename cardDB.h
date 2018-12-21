@@ -11,8 +11,8 @@
 
 using namespace std;
 
-typedef map<cRFIDType,card> rfCardMap;
-typedef pair<cRFIDType,card> rfCardPair;
+typedef map<cRFIDType,card*> rfCardMap;
+typedef pair<cRFIDType,card*> rfCardPair;
 typedef pair<rfCardMap::iterator,bool> rfCardIterPair;
 
 
@@ -38,7 +38,7 @@ public:
 	//	returns: status code, 0-successful
 	//			 1-card already exists
 	//			 -1-undefined error, card not added
-	Status add(cRFIDType rfid, card c);
+	Status add(cRFIDType rfid, card *c);
 
 	//	del(rfid): deletes the entry with key rfid
 	//	param: rfid - used to find the card entry
@@ -50,7 +50,7 @@ public:
 	//	param: rfid - used to find card
 	//	returns: reference of found card
 	//			 null card if not found;
-	card& find(cRFIDType rfid);
+	card* find(cRFIDType rfid);
 
 	//	cidFind(cardid): find the rfid for a cardID
 	//	param: id - card id to find

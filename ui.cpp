@@ -45,6 +45,7 @@ timeType ui::read::time() {
 	while (!scanf("%lld", &t)) {
 		msg::frontendErr("time read error");
 	}
+	return t;
 }
 
 
@@ -69,7 +70,7 @@ Status ui::ui() {
 			ui::vehOps::main();
 			break;
 		case 4:
-			ui::vehDBOps();
+			//ui::vehDBOps();
 			break;
 		default:
 			msg::frontendErr("Selected ui mode is not available");
@@ -94,12 +95,12 @@ Status ui::cardReader(){
 			break;
 		}
 
-		card& c = cdb.find(rfid);
-		if (c.getID() == 0) {
+		card* c = cdb.find(rfid);
+		if (c->getID() == 0) {
 			msg::frontendInfo("Invalid card, please retry");
 		}
 
-		if (c.swipe(v)) {
+		if (c->swipe(v)) {
 			msg::frontendErr("Scan failed, please retry");
 		}
 	}
@@ -135,19 +136,19 @@ Status ui::cardDB::add() {
 	cTypeT cType;
 	cBalanceType cBal;
 	cRideCountType cRideCount;
-	char nameBuf[BUF_LEN] = { 0 }, genBuf[2] = { 0 }, unitBuf[BUF_LEN] = { 0 };
+	//char nameBuf[BUF_LEN] = { 0 }, genBuf[2] = { 0 }, unitBuf[BUF_LEN] = { 0 };
 	int scanCount;
 
 	msg::inputMsg("rfid, ID, Type, Bal, RideCount, Name, Gender, Unit");
-	scanCount = scanf("%u %llu %hu %lf %u %s %s %s", &rfid, &cid, &cType, &cBal, &cRideCount, nameBuf, genBuf, unitBuf);
-	if (scanCount != 8) {
-		msg::frontendErr("Invalid entry");
-		return -1;
-	}
+	//scanCount = scanf("%u %llu %hu %lf %u %s %s %s", &rfid, &cid, &cType, &cBal, &cRideCount, nameBuf, genBuf, unitBuf);
+	//if (scanCount != 8) {
+		//msg::frontendErr("Invalid entry");
+		//return -1;
+	//}
 
-	string sname(nameBuf), sgender(genBuf), sunit(unitBuf);
-	card c(cid, cType, cBal, cRideCount, sname, sgender, sunit);
-	cdb.add(rfid, c);
+	//string sname(nameBuf), sgender(genBuf), sunit(unitBuf);
+	//card c(cid, cType, cBal, cRideCount, sname, sgender, sunit);
+	//cdb.add(rfid, c);
 	msg::debug("card add success");
 
 	return 0;
@@ -223,4 +224,5 @@ Status ui::vehOps::main() {
 		}
 
 	}
+	return 0;
 }

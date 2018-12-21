@@ -12,17 +12,21 @@ cardDB::cardDB() {
 cardDB::~cardDB() {
 	msg::backendInfo("Destorying cardDB");
 	writeToDisk();
+	rfCardMap::iterator it;
+	for (it = cardMap.begin(); it != cardMap.end(); it++) {
+		free(it->second);
+	}
 }
 
-Status cardDB::add(cRFIDType rfid, card c) {
+Status cardDB::add(cRFIDType rfid, card* c) {
 	if (cardMap.find(rfid) != cardMap.end()) {
-		msg::cardExists(c.getID());
+		msg::cardExists(c->getID());
 		return 1;
 	}
 
 	rfCardIterPair p = cardMap.insert(rfCardPair(rfid, c));
 	if (p.second) {
-		msg::cardAddSuccess(c.getID());
+		msg::cardAddSuccess(c->getID());
 		return 0;
 	}
 
@@ -36,15 +40,15 @@ Status cardDB::del(cRFIDType rfid) {
 		msg::backendErr("Cannot delete, card not found");
 		return 1;
 	}
-
+	free(it->second);
 	return cardMap.erase(rfid);
 }
 
-card& cardDB::find(cRFIDType rfid) {
+card* cardDB::find(cRFIDType rfid) {
 
 	rfCardMap::iterator it = cardMap.find(rfid);
 	if (it == cardMap.end()) {
-		return emptyCard;
+		return &emptyCard;
 	}
 
 	return it->second;
@@ -57,7 +61,7 @@ cRFIDType cardDB::cidFind(cIDType id) {
 
 	rfCardMap::iterator it;
 	for (it = cardMap.begin(); it != cardMap.end(); it++) {
-		if (it->second.getID() == id) {
+		if (it->second->getID() == id) {
 			break;
 		}
 	}
@@ -70,7 +74,7 @@ cRFIDType cardDB::cidFind(cIDType id) {
 void cardDB::display() {
 	rfCardMap::iterator iter = cardMap.begin();
 	while (iter != cardMap.end()) {
-		iter->second.debugPrintCard();
+		iter->second->debugPrintCard();
 		iter++;
 	}
 }
@@ -78,7 +82,7 @@ void cardDB::display() {
 Status cardDB::monthlyUpdate() {
 	rfCardMap::iterator iter;
 	for (iter = cardMap.begin(); iter != cardMap.end(); iter++) {
-		iter->second.setRideCount(0);
+		iter->second->setRideCount(0);
 	}
 	return 0;
 }
@@ -94,7 +98,7 @@ Status cardDB::writeToDisk() {
 	while (iter != cardMap.end()) {
 		dbFile << iter->first << " "
 			//Use card's own write handler
-			<< iter->second.writeCard() << endl;
+			<< iter->second->writeCard() << endl;
 		iter++;
 	}
 	dbFile.close();
@@ -122,7 +126,7 @@ Status cardDB::readFromDisk() {
 			continue;
 		}
 
-		card* c = &card();
+		card* c = NULL;
 		cRFIDType rfid;
 		cTypeT cardType;
 
@@ -132,13 +136,16 @@ Status cardDB::readFromDisk() {
 		//Switching handlers for different card types
 		switch (cardType) {
 		case 1:
-			c = &studentCard(cardConstruct);
+			c = new studentCard(cardConstruct);
 			break;
 		case 2:
-			c = &teacherCard(cardConstruct);
+			c = new teacherCard(cardConstruct);
 			break;
 		case 3:
-			c = &restrictedCard(cardConstruct);
+			c = new restrictedCard(cardConstruct);
+			break;
+		case 4:
+			c = new tempCard(cardConstruct);
 			break;
 		default:
 			//No match catcher
@@ -146,7 +153,7 @@ Status cardDB::readFromDisk() {
 			break;
 		}
 
-		add(rfid, *c);
+		add(rfid, c);
 	}
 	return 0;
 }
