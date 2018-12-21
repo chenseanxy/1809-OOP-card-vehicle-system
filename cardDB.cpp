@@ -26,7 +26,7 @@ Status cardDB::add(cRFIDType rfid, card* c) {
 
 	rfCardIterPair p = cardMap.insert(rfCardPair(rfid, c));
 	if (p.second) {
-		msg::cardAddSuccess(c->getID());
+		msg::backendInfo("Sucessfully added card " + to_string(p.first->second->getID()));
 		return 0;
 	}
 
@@ -41,6 +41,17 @@ Status cardDB::del(cRFIDType rfid) {
 		return 1;
 	}
 	free(it->second);
+	msg::backendInfo("Successfully deleted card " + to_string(it->second->getID()));
+	return cardMap.erase(rfid);
+}
+
+Status cardDB::del_nofree(cRFIDType rfid) {
+	rfCardMap::iterator it = cardMap.find(rfid);
+	if (it == cardMap.end()) {
+		msg::backendErr("Cannot delete, card not found");
+		return 1;
+	}
+	msg::backendInfo("Successfully removed card " + to_string(it->second->getID())+" from database");
 	return cardMap.erase(rfid);
 }
 
@@ -48,7 +59,7 @@ card* cardDB::find(cRFIDType rfid) {
 
 	rfCardMap::iterator it = cardMap.find(rfid);
 	if (it == cardMap.end()) {
-		return &emptyCard;
+		return NULL;
 	}
 
 	return it->second;
@@ -126,34 +137,42 @@ Status cardDB::readFromDisk() {
 			continue;
 		}
 
-		card* c = NULL;
-		cRFIDType rfid;
-		cTypeT cardType;
+		rfCardPair p = readCardInfo(ss);
 
-		ss >> rfid >> cardType;
-		getline(ss, cardConstruct); //throw the rest of ss to handler string
-
-		//Switching handlers for different card types
-		switch (cardType) {
-		case 1:
-			c = new studentCard(cardConstruct);
-			break;
-		case 2:
-			c = new teacherCard(cardConstruct);
-			break;
-		case 3:
-			c = new restrictedCard(cardConstruct);
-			break;
-		case 4:
-			c = new tempCard(cardConstruct);
-			break;
-		default:
-			//No match catcher
-			msg::backendErr("Card Type not found: " + to_string(cardType));
-			break;
-		}
-
-		add(rfid, c);
+		add(p.first, p.second);
 	}
 	return 0;
+}
+
+rfCardPair cardDB::readCardInfo(stringstream &ss) {
+	string cardConstruct;
+	card* c = NULL;
+	cRFIDType rfid;
+	cTypeT cardType;
+
+	ss >> rfid >> cardType;
+
+	getline(ss, cardConstruct); //throw the rest of ss to handler string
+
+	//Switching handlers for different card types
+	switch (cardType) {
+	case 1:
+		c = new studentCard(cardConstruct);
+		break;
+	case 2:
+		c = new teacherCard(cardConstruct);
+		break;
+	case 3:
+		c = new restrictedCard(cardConstruct);
+		break;
+	case 4:
+		c = new tempCard(cardConstruct);
+		break;
+	default:
+		//No match catcher
+		msg::backendErr("Card Type not found: " + to_string(cardType));
+		break;
+	}
+	
+	return rfCardPair(rfid,c);
 }

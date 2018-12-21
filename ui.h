@@ -31,6 +31,8 @@ namespace ui {
 		vLoadType vload();
 
 		timeType time();
+
+		bool confirm();
 	}
 
 	//	ui(): main console logic

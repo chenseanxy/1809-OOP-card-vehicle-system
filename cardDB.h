@@ -45,6 +45,8 @@ public:
 	//	returns: status code of map.erase
 	//			 0-successful, 1-<rfid,card>pair not found
 	Status del(cRFIDType rfid);
+
+	Status del_nofree(cRFIDType rfid);
 	
 	//	find(rfid): find and returns reference of card
 	//	param: rfid - used to find card
@@ -80,4 +82,7 @@ public:
 	//	returns: status code, 0-successful
 	//			 1-dbFile(cardDB.txt) cannot be opened
 	Status readFromDisk();
+
+	
+	rfCardPair readCardInfo(stringstream &ss);
 };

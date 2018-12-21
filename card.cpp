@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <iomanip>
 #include "main.h"
 
 using namespace std;
@@ -48,7 +49,7 @@ cTypeT card::getCardType() const {
 	return _cType;
 }
 string card::getCardTypeString() const {
-	string cardTypes[3] = { "Student", "Teacher", "Restricted" };
+	string cardTypes[5] = {"None", "Student", "Teacher", "Restricted", "Temporary" };
 	return cardTypes[getCardType()];
 }
 cRideCountType card::getRideCount() const {
@@ -89,16 +90,27 @@ Status card::setRideCount(cRideCountType rideC) {
 }
 
 Status card::showSwipeInfo() const {
-	cout << "ID: " << getID() << endl
-		<< "Name：" << getName() << endl
-		<< "Type: " << getCardTypeString() << endl
-		<< "Bal: " << getBalance() << endl
-		<< "RideC: " << getRideCount() << endl;
+	cout << "	ID: " << getID() << endl
+		<< "	Name：" << getName() << endl
+
+		<< "	Type: " << getCardTypeString() << endl
+		<< "	Bal: " << getBalance() << endl
+		<< "	RideC: " << getRideCount() << endl;
 
 	return 0;
 }
 Status card::showInfo() const {
-	debugPrintCard();
+	msg::setColor(10);
+	cout << "--------------------CARD INFO--------------------" << endl
+		<< "ID: " << getID() << endl
+		<< "Name：" << getName() << endl
+		<< "Gender: " << getGender() << endl
+		<< "Unit:" << getUnit() << endl
+		<< "Type: " << getCardTypeString() << endl
+		<< "Bal: " << getBalance() << endl
+		<< "Ride Count: " << getRideCount() << endl;
+	msg::resetColor();
+
 	return 0;
 }
 
@@ -117,14 +129,14 @@ Status card::freeRide() {
 }
 
 Status card::rejectRide() {
-	msg::qError("Ride rejected");
+	msg::frontendErr("Ride rejected");
 	return 0;
 }
 
 string card::writeCard() const {
 	stringstream ss;
-	ss << getID() << " "
-		<< getCardType() << " "
+	ss << getCardType() << " "
+		<< getID() << " "
 		<< getBalance() << " "
 		<< getRideCount() << " "
 		<< getName() << " "
@@ -149,7 +161,7 @@ void card::debugPrintCard() const {
 
 Status card::charge(cBalanceType amount) {
 	if (amount < 0) {
-		msg::qError(string("Cannot charge negative amount"));
+		msg::backendErr(string("Cannot charge negative amount"));
 		return 2;
 	}
 
@@ -159,7 +171,7 @@ Status card::charge(cBalanceType amount) {
 	}
 
 	setBalance(getBalance() - amount);
-	msg::paymentSuccess();
+	msg::frontendInfo("Payment successful!");
 	return 0;
 }
 
@@ -230,6 +242,11 @@ restrictedCard::restrictedCard(string dbLine)
 }
 
 Status restrictedCard::swipe(vIDType vid) {
+	if (preSwipeCheck(*this, vid)) {
+		rejectRide();
+		return 1;
+	}
+	
 	if (getID() == 0) { return -1; }
 
 	if (getFreeRideAvail() == true) {
@@ -267,7 +284,7 @@ tempCard::tempCard(string dbLine)
 }
 
 Status tempCard::swipe(vIDType vehNum) {
-	if (!preSwipeCheck(*this, vehNum)) {
+	if (preSwipeCheck(*this, vehNum)) {
 		rejectRide();
 		return 1;
 	}
@@ -275,6 +292,7 @@ Status tempCard::swipe(vIDType vehNum) {
 	//	charge the card of default amount
 	Status chargeResult = charge();
 	if (isExpired()) {
+		msg::frontendErr("本卡已失效！有效期至 " + getExpTimeStr());
 		rejectRide();
 		return 1;
 	}
@@ -293,6 +311,14 @@ Status tempCard::swipe(vIDType vehNum) {
 Status tempCard::showSwipeInfo() const {
 	card::showSwipeInfo();
 	cout << "有效期: " << getExpTimeStr() << endl;
+	return 0;
+}
+
+Status tempCard::showInfo() const {
+	card::showInfo();
+	msg::setColor(9);
+	cout << "Expire Time: " << getExpTime() << endl;
+	msg::resetColor();
 	return 0;
 }
 
@@ -322,10 +348,10 @@ time_t tempCard::getExpTime() const {
 }
 
 string tempCard::getExpTimeStr() const {
-	char bfr[TIME_FMT_BFR_LEN] = { 0 };
 	time_t exp = getExpTime();
-	strftime(bfr, sizeof(bfr), "%Y-%m-%d", localtime(&exp));
-	return string(bfr);
+	stringstream ss;
+	ss << std::put_time(localtime(&exp), "%Y-%m-%d");
+	return ss.str();
 }
 
 bool tempCard::isExpired() const {

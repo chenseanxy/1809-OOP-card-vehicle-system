@@ -130,7 +130,7 @@ public:
 	//	showInfo(): (deprecated) (non-functional)
 	//		shows all info about the card
 	//		wrapper for debugPrintCard()
-	Status showInfo() const;
+	virtual Status showInfo() const;
 
 
 	/*******************
@@ -215,6 +215,7 @@ public:
 	tempCard(string dbLine);
 	Status swipe(vIDType vehNum);
 	Status showSwipeInfo() const;
+	Status showInfo() const;
 	string writeCard() const;
 
 	//	renewExpTime(): renew the expiration time
