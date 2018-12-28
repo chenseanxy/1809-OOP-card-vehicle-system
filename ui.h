@@ -39,7 +39,7 @@ namespace ui {
 	//	input mode to switch between modes
 	//	1-cardReader, 2-cardDB
 	//	3-vehOps, 4-vehDB
-	//	-1 to quit
+	//	0 to quit
 	Status ui();
 
 	//	cardReader(): cardReader mode
@@ -54,6 +54,7 @@ namespace ui {
 		Status add();
 		Status revoke();
 		Status issue();
+		Status view();
 	}
 
 	namespace vehOps {

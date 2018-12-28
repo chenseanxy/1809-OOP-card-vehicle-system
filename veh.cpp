@@ -1,6 +1,7 @@
 #include "types.h"
 #include "veh.h"
 #include "msg.h"
+#include <iostream>
 
 veh::veh() {
 	maxLoad = 0;
@@ -66,11 +67,23 @@ bool veh::isNull() const {
 }
 
 void veh::print() const {
-	msg::debug("License: " + getLicense());
-	msg::debug("Driver: " + getDriver());
-	msg::debug("Load / MaxLoad: " + to_string(getLoad()) + " / " + to_string(getMaxLoad()));
-	msg::debug("isFull: " + to_string(isFull()));
-	//TODO: More debug info required
+	msg::setColor(10);
+	std::cout << "--------------------Vehicle Info--------------------" << endl
+		<< "License: " << getLicense() << endl
+		<< "Driver: " << getDriver() << endl
+		<< "Current Load / Max Load: " << getLoad() << " / " << getMaxLoad() << endl
+		<< "Scheduled Time: " << getSch() << endl
+		<< "Vehicle Time: " << getTime() << endl << endl;
+	msg::resetColor();
+}
+
+void veh::printLoadInfo() const {
+	double rate = getLoad() / getMaxLoad();
+	
+	msg::setColor(10);
+	std::cout << "Current Load / Max Load: " << getLoad() << " / " << getMaxLoad() << endl
+		<< "Load Rate: " << rate << endl;
+	msg::resetColor();
 }
 
 Status veh::incLoad(vLoadType amount=1) {

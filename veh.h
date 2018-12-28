@@ -38,6 +38,7 @@ public:
 	vIDType getNextVeh() const;
 	bool isNull() const;
 	void print() const;
+	void printLoadInfo() const;
 
 	Status incLoad(vLoadType amount);
 	Status setLoad(vLoadType amount);

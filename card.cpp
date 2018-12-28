@@ -166,7 +166,7 @@ Status card::charge(cBalanceType amount) {
 	}
 
 	if (getBalance() < amount) {
-		msg::notEnoughBalance();
+		msg::frontendErr("余额不足！");
 		return 1;
 	}
 
@@ -289,14 +289,15 @@ Status tempCard::swipe(vIDType vehNum) {
 		return 1;
 	}
 
-	//	charge the card of default amount
-	Status chargeResult = charge();
 	if (isExpired()) {
 		msg::frontendErr("本卡已失效！有效期至 " + getExpTimeStr());
 		rejectRide();
 		return 1;
 	}
-	else if (chargeResult == 0) {
+
+	//	charge the card of default amount
+	Status chargeResult = charge();
+	if (chargeResult == 0) {
 		//	charge is successful
 		ride(vehNum);
 		showSwipeInfo();

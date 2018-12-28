@@ -40,9 +40,9 @@ Status cardDB::del(cRFIDType rfid) {
 		msg::backendErr("Cannot delete, card not found");
 		return 1;
 	}
-	free(it->second);
-	msg::backendInfo("Successfully deleted card " + to_string(it->second->getID()));
-	return cardMap.erase(rfid);
+	msg::backendInfo("Deleting card " + to_string(it->second->getID()));
+	delete it->second;
+	return cardMap.erase(rfid) - 1;
 }
 
 Status cardDB::del_nofree(cRFIDType rfid) {
@@ -51,8 +51,8 @@ Status cardDB::del_nofree(cRFIDType rfid) {
 		msg::backendErr("Cannot delete, card not found");
 		return 1;
 	}
-	msg::backendInfo("Successfully removed card " + to_string(it->second->getID())+" from database");
-	return cardMap.erase(rfid);
+	msg::backendInfo("Removing card " + to_string(it->second->getID())+" from database");
+	return cardMap.erase(rfid) - 1;
 }
 
 card* cardDB::find(cRFIDType rfid) {

@@ -19,15 +19,27 @@ cIDType ui::read::cid() {
 }
 
 cBalanceType ui::read::cbal() {
-	return cBalanceType();
+	cBalanceType r = 0;
+	while (!scanf("%lf", &r)) {
+		msg::frontendErr("cbal read error");
+	}
+	return r;
 }
 
 cTypeT ui::read::ctype() {
-	return cTypeT();
+	cTypeT r = 0;
+	while (!scanf("%hu", &r)) {
+		msg::frontendErr("ctype read error");
+	}
+	return r;
 }
 
 cRideCountType ui::read::cRideCount() {
-	return cRideCountType();
+	cRideCountType d = 0;
+	while (!scanf("%u", &d)) {
+		msg::frontendErr("cridecount read error");
+	}
+	return d;
 }
 
 vIDType ui::read::vid() {
@@ -39,7 +51,11 @@ vIDType ui::read::vid() {
 }
 
 vLoadType ui::read::vload() {
-	return vLoadType();
+	vLoadType r = 0;
+	while (!scanf("%hu", &r)) {
+		msg::frontendErr("vload read error");
+	}
+	return r;
 }
 
 timeType ui::read::time() {
@@ -63,14 +79,16 @@ bool ui::read::confirm() {
 Status ui::ui() {
 	int mode = -1;
 	while (mode != 0) {
+		msg::newLine();
 		msg::setColor(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-		std::cout << "UI Base:" << endl
+		std::cout << "UI Base:" << endl << endl
 			<< "0 - Quit" << endl
 			<< "1 - Card Reader" << endl
 			<< "2 - Card Database Operations" << endl
 			<< "3 - Vehicle Operations" << endl
 			<< "4 - Vehicle Database Operations" << endl << endl;
 		msg::resetColor();
+
 		msg::inputMsg("Please enter mode");
 		while (scanf("%d", &mode) != 1) {
 			msg::inputMsg("Please enter a valid number");
@@ -97,11 +115,10 @@ Status ui::ui() {
 			break;
 		default:
 			msg::frontendErr("Selected ui mode is not available");
+			system("pause");
 			break;
 		}
-
 		system("cls");
-
 	}
 
 	return 0;
@@ -112,8 +129,14 @@ Status ui::cardReader() {
 	msg::header("Card Reader:\nUse RFID=0 to quit");
 
 	vIDType v;
-	msg::inputMsg("Please enter vehicle ID");
-	v = ui::read::vid();
+	while (true) {
+		msg::inputMsg("Please enter vehicle ID");
+		v = ui::read::vid();
+		if (!vdb.find(v).isNull()) {
+			break;
+		}
+		msg::frontendErr("Vehicle ID invalid, try again");
+	}
 
 	cRFIDType rfid;
 	while (true) {
@@ -125,8 +148,9 @@ Status ui::cardReader() {
 		}
 
 		card* c = cdb.find(rfid);
-		if (c == NULL) {
-			msg::frontendErr("Invalid card, please retry");
+		if (c == nullptr) {
+			msg::frontendErr("卡无效，请重试！");
+			continue;
 		}
 
 		if (c->swipe(v)) {
@@ -140,9 +164,11 @@ Status ui::cardDB::main() {
 	int mode = 0;
 	msg::header("Card DB Operations:");
 	msg::header("Modes:");
+	msg::header("0 - Quit");
 	msg::header("1 - Add card to database");
 	msg::header("2 - Revoke card from database");
 	msg::header("3 - Issue a new card from old card");
+	msg::header("4 - Veiw card information");
 	msg::newLine();
 	msg::inputMsg("Please enter mode");
 	if (scanf("%d", &mode)) {
@@ -155,6 +181,9 @@ Status ui::cardDB::main() {
 			break;
 		case 3:
 			issue();
+			break;
+		case 4:
+			view();
 			break;
 		default:
 			break;
@@ -189,11 +218,16 @@ Status ui::cardDB::add() {
 	msg::inputMsg("Add to the database? (Y/N)");
 	switch (read::confirm()) {
 	case true:
-		cdb.add(p.first, p.second);
-		msg::frontendInfo("Card add success");
+		if (cdb.add(p.first, p.second) == 0) {
+			msg::frontendInfo("Card add success");
+		}
+		else {
+			msg::frontendErr("Cannot add card into db, please retry");
+			delete p.second;
+		}
 		break;
 	case false:
-		free(p.second);
+		delete p.second;
 		break;
 	}
 
@@ -218,8 +252,12 @@ Status ui::cardDB::revoke() {
 	c->showInfo();
 	msg::inputMsg("Revoke card from database? (Y/N)");
 	if (read::confirm()) {
-		msg::frontendInfo("Card revoke success");
-		cdb.del(rfid);
+		if (cdb.del(rfid) == 0) {
+			msg::frontendInfo("Card revoke success");
+		}
+		else {
+			msg::frontendErr("Cannot remove card from database");
+		}
 	}
 	return 0;
 }
@@ -245,39 +283,85 @@ Status ui::cardDB::issue() {
 	c->showInfo();
 	msg::inputMsg("Commit changes? (Y/N)");
 	if (read::confirm()) {
-		cdb.del_nofree(rfid);
-		cdb.add(newrfid, c);
-		msg::frontendInfo("Changes commited");
+		Status remove = cdb.del_nofree(rfid);
+		if(remove != 0){
+			msg::frontendErr("Cannot remove card from database");
+			return 1;
+		}
+		Status add = cdb.add(newrfid, c);
+		if (add == 0 && remove == 0) {
+			msg::frontendInfo("Changes commited");
+		}
+	}
+	return 0;
+}
+
+Status ui::cardDB::view() {
+	msg::newLine();
+	msg::header("Card DB Operations: view card information");
+	cIDType cid = -1;
+	cRFIDType rfid = -1;
+
+	while (cid != 0) {
+		msg::newLine();
+		msg::inputMsg("Please input card ID, 0 to quit");
+		cid = ui::read::cid();
+		rfid = cdb.cidFind(cid);
+		if (rfid == 0) {
+			msg::frontendErr("Card not found");
+			return -1;
+		}
+		card* c = cdb.find(rfid);
+		c->showInfo();
 	}
 	return 0;
 }
 
 Status ui::vehOps::main() {
-	int mode = 0;
+	msg::newLine();
+	msg::header("Vehicle Operations:");
+	int mode = -1;
 	vIDType vid;
+	msg::inputMsg("Please input vehicle ID");
 	vid = ui::read::vid();
 	veh& v = vdb.find(vid);
 	if (v.getMaxLoad() == 0) {
 		msg::frontendErr("vID invalid");
+		system("pause");
 		return 1;
 	}
 
-	while (mode != -1) {
-		msg::inputMsg("Please enter mode, -1 to quit");
+	while (mode != 0) {
+		msg::newLine();
+		msg::header("Modes:");
+		msg::header("0 - Quit");
+		msg::header("1 - Set arrival time");
+		msg::header("2 - Set departure time");
+		msg::header("3 - Set destnation time");
+		msg::header("4 - View vehicle information");
+		msg::header("5 - View vehicle load");
+
+		msg::newLine();
+
+		msg::inputMsg("Please enter mode");
 		while (scanf("%d", &mode) != 1) {
 			msg::inputMsg("Please enter a valid number");
 		}
 
 		switch (mode) {
-		case -1:
+		case 0:
 			msg::frontendInfo("Exiting vehOps");
 			break;
 		case 1:
 		case 2:
 		case 3:
 		{
-			msg::inputMsg("Please enter time");
+			msg::inputMsg("Please enter time, 0 for now");
 			timeType t = ui::read::time();
+			if (t == 0) {
+				t = time(NULL);
+			}
+
 			switch (mode) {
 			case 1:
 				v.timeArr(t);
@@ -293,6 +377,12 @@ Status ui::vehOps::main() {
 			}
 			break;
 		}
+		case 4:
+			v.print();
+			break;
+		case 5:
+			v.printLoadInfo();
+			break;
 		default:
 			msg::frontendErr("Selected vehOps mode is not available");
 			break;
